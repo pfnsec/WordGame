@@ -1,10 +1,10 @@
 {
-  "name": "react-apollo-instagram-example",
+  "name": "word-game",
   "version": "0.0.1",
   "private": true,
   "devDependencies": {
-    "babel-eslint": "7.2.3",
-    "eslint": "4.19.1",
+    "babel-eslint": "9.0.0",
+    "eslint": "5.12.0",
     "eslint-config-react-app": "2.1.0",
     "eslint-plugin-flowtype": "2.50.3",
     "eslint-plugin-import": "2.19.1",
@@ -15,6 +15,7 @@
     "react-scripts": "2.1.8"
   },
   "dependencies": {
+    "@material-ui/core": "^4.8.3",
     "apollo-boost": "0.4.7",
     "apollo-client": "2.6.8",
     "apollo-client-preset": "1.0.8",
@@ -50,5 +51,11 @@
     "semi": false,
     "singleQuote": true,
     "trailingComma": "all"
-  }
+  },
+  "browserslist": [
+    ">0.2%",
+    "not dead",
+    "not ie <= 11",
+    "not op_mini all"
+  ]
 }
