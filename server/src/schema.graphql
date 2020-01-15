@@ -1,21 +1,16 @@
 type Query {
-  feed: [Post!]!
-  drafts: [Post!]!
-  post(id: ID!): Post
+  lobbies: [Lobby!]!
   me: User
 }
 
 type Mutation {
-  signup(email: String!, password: String!, name: String!): AuthPayload!
-  login(email: String!, password: String!): AuthPayload!
-  createDraft(title: String!, content: String!): Post!
-  publish(id: ID!): Post!
-  deletePost(id: ID!): Post!
+  setNick(nick: String!): AuthPayload!
+
+  createLobby: Lobby!
+  submitTurn(word: String!, lobby: ID!): String!
+
 }
 
-type Subscription {
-  feedSubscription: Post
-}
 
 type AuthPayload {
   token: String!
@@ -24,15 +19,25 @@ type AuthPayload {
 
 type User {
   id: ID!
-  email: String!
-  name: String!
-  posts: [Post!]!
+  nick: String!
 }
 
-type Post {
+
+type Round {
+  word1: String!
+  word2: String!
+}
+
+
+type Subscription {
+  nextRound: Round!
+}
+
+
+type Lobby {
   id: ID!
-  published: Boolean!
-  title: String!
-  content: String!
-  author: User!
+  started: Boolean!
+  creator: User!
+  partner: User
+  rounds: [Round!]
 }
