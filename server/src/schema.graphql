@@ -24,6 +24,7 @@ type User {
 
 
 type Round {
+  id: ID!
   word1: String!
   word2: String!
 }

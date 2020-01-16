@@ -4,6 +4,7 @@ type User {
 }
 
 type Round {
+  id: ID! @id
   word1: String!
   word2: String!
 }
@@ -13,8 +14,8 @@ type Lobby {
   createdAt: DateTime! @createdAt
   updatedAt: DateTime! @updatedAt
   started: Boolean!
-  creator: User!
-  partner: User
+  creator: User! @relation(name: "Creator")
+  partner: User  @relation(name: "Partner")
   creator_word: String
   partner_word: String
   rounds: [Round!]
