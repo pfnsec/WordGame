@@ -1,8 +1,8 @@
 const Subscription = {
-  feedSubscription: {
+  nextRound: {
     subscribe: async (parent, args, context) => {
       return context.prisma.$subscribe
-        .post({
+        .lobby({
           mutation_in: ['CREATED', 'UPDATED'],
         })
         .node()
