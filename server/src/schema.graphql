@@ -39,5 +39,7 @@ type Lobby {
   started: Boolean!
   creator: User!
   partner: User
+  creator_word: String
+  partner_word: String
   rounds: [Round!]
 }
