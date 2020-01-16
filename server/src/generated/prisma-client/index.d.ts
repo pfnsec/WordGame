@@ -10,7 +10,8 @@ type AtLeastOne<T, U = { [K in keyof T]: Pick<T, K> }> = Partial<T> &
   U[keyof U];
 
 export interface Exists {
-  post: (where?: PostWhereInput) => Promise<boolean>;
+  lobby: (where?: LobbyWhereInput) => Promise<boolean>;
+  round: (where?: RoundWhereInput) => Promise<boolean>;
   user: (where?: UserWhereInput) => Promise<boolean>;
 }
 
@@ -33,88 +34,115 @@ export interface Prisma {
    * Queries
    */
 
-  post: (where: PostWhereUniqueInput) => PostPromise;
-  posts: (
-    args?: {
-      where?: PostWhereInput;
-      orderBy?: PostOrderByInput;
-      skip?: Int;
-      after?: String;
-      before?: String;
-      first?: Int;
-      last?: Int;
-    }
-  ) => FragmentableArray<Post>;
-  postsConnection: (
-    args?: {
-      where?: PostWhereInput;
-      orderBy?: PostOrderByInput;
-      skip?: Int;
-      after?: String;
-      before?: String;
-      first?: Int;
-      last?: Int;
-    }
-  ) => PostConnectionPromise;
+  lobby: (where: LobbyWhereUniqueInput) => LobbyPromise;
+  lobbies: (args?: {
+    where?: LobbyWhereInput;
+    orderBy?: LobbyOrderByInput;
+    skip?: Int;
+    after?: String;
+    before?: String;
+    first?: Int;
+    last?: Int;
+  }) => FragmentableArray<Lobby>;
+  lobbiesConnection: (args?: {
+    where?: LobbyWhereInput;
+    orderBy?: LobbyOrderByInput;
+    skip?: Int;
+    after?: String;
+    before?: String;
+    first?: Int;
+    last?: Int;
+  }) => LobbyConnectionPromise;
+  round: (where: RoundWhereUniqueInput) => RoundPromise;
+  rounds: (args?: {
+    where?: RoundWhereInput;
+    orderBy?: RoundOrderByInput;
+    skip?: Int;
+    after?: String;
+    before?: String;
+    first?: Int;
+    last?: Int;
+  }) => FragmentableArray<Round>;
+  roundsConnection: (args?: {
+    where?: RoundWhereInput;
+    orderBy?: RoundOrderByInput;
+    skip?: Int;
+    after?: String;
+    before?: String;
+    first?: Int;
+    last?: Int;
+  }) => RoundConnectionPromise;
   user: (where: UserWhereUniqueInput) => UserPromise;
-  users: (
-    args?: {
-      where?: UserWhereInput;
-      orderBy?: UserOrderByInput;
-      skip?: Int;
-      after?: String;
-      before?: String;
-      first?: Int;
-      last?: Int;
-    }
-  ) => FragmentableArray<User>;
-  usersConnection: (
-    args?: {
-      where?: UserWhereInput;
-      orderBy?: UserOrderByInput;
-      skip?: Int;
-      after?: String;
-      before?: String;
-      first?: Int;
-      last?: Int;
-    }
-  ) => UserConnectionPromise;
+  users: (args?: {
+    where?: UserWhereInput;
+    orderBy?: UserOrderByInput;
+    skip?: Int;
+    after?: String;
+    before?: String;
+    first?: Int;
+    last?: Int;
+  }) => FragmentableArray<User>;
+  usersConnection: (args?: {
+    where?: UserWhereInput;
+    orderBy?: UserOrderByInput;
+    skip?: Int;
+    after?: String;
+    before?: String;
+    first?: Int;
+    last?: Int;
+  }) => UserConnectionPromise;
   node: (args: { id: ID_Output }) => Node;
 
   /**
    * Mutations
    */
 
-  createPost: (data: PostCreateInput) => PostPromise;
-  updatePost: (
-    args: { data: PostUpdateInput; where: PostWhereUniqueInput }
-  ) => PostPromise;
-  updateManyPosts: (
-    args: { data: PostUpdateManyMutationInput; where?: PostWhereInput }
-  ) => BatchPayloadPromise;
-  upsertPost: (
-    args: {
-      where: PostWhereUniqueInput;
-      create: PostCreateInput;
-      update: PostUpdateInput;
-    }
-  ) => PostPromise;
-  deletePost: (where: PostWhereUniqueInput) => PostPromise;
-  deleteManyPosts: (where?: PostWhereInput) => BatchPayloadPromise;
+  createLobby: (data: LobbyCreateInput) => LobbyPromise;
+  updateLobby: (args: {
+    data: LobbyUpdateInput;
+    where: LobbyWhereUniqueInput;
+  }) => LobbyPromise;
+  updateManyLobbies: (args: {
+    data: LobbyUpdateManyMutationInput;
+    where?: LobbyWhereInput;
+  }) => BatchPayloadPromise;
+  upsertLobby: (args: {
+    where: LobbyWhereUniqueInput;
+    create: LobbyCreateInput;
+    update: LobbyUpdateInput;
+  }) => LobbyPromise;
+  deleteLobby: (where: LobbyWhereUniqueInput) => LobbyPromise;
+  deleteManyLobbies: (where?: LobbyWhereInput) => BatchPayloadPromise;
+  createRound: (data: RoundCreateInput) => RoundPromise;
+  updateRound: (args: {
+    data: RoundUpdateInput;
+    where: RoundWhereUniqueInput;
+  }) => RoundPromise;
+  updateManyRounds: (args: {
+    data: RoundUpdateManyMutationInput;
+    where?: RoundWhereInput;
+  }) => BatchPayloadPromise;
+  upsertRound: (args: {
+    where: RoundWhereUniqueInput;
+    create: RoundCreateInput;
+    update: RoundUpdateInput;
+  }) => RoundPromise;
+  deleteRound: (where: RoundWhereUniqueInput) => RoundPromise;
+  deleteManyRounds: (where?: RoundWhereInput) => BatchPayloadPromise;
   createUser: (data: UserCreateInput) => UserPromise;
-  updateUser: (
-    args: { data: UserUpdateInput; where: UserWhereUniqueInput }
-  ) => UserPromise;
-  updateManyUsers: (
-    args: { data: UserUpdateManyMutationInput; where?: UserWhereInput }
-  ) => BatchPayloadPromise;
-  upsertUser: (
-    args: {
-      where: UserWhereUniqueInput;
-      create: UserCreateInput;
-      update: UserUpdateInput;
-    }
-  ) => UserPromise;
+  updateUser: (args: {
+    data: UserUpdateInput;
+    where: UserWhereUniqueInput;
+  }) => UserPromise;
+  updateManyUsers: (args: {
+    data: UserUpdateManyMutationInput;
+    where?: UserWhereInput;
+  }) => BatchPayloadPromise;
+  upsertUser: (args: {
+    where: UserWhereUniqueInput;
+    create: UserCreateInput;
+    update: UserUpdateInput;
+  }) => UserPromise;
   deleteUser: (where: UserWhereUniqueInput) => UserPromise;
   deleteManyUsers: (where?: UserWhereInput) => BatchPayloadPromise;
 
@@ -126,9 +154,12 @@ export interface Prisma {
 }
 
 export interface Subscription {
-  post: (
-    where?: PostSubscriptionWhereInput
-  ) => PostSubscriptionPayloadSubscription;
+  lobby: (
+    where?: LobbySubscriptionWhereInput
+  ) => LobbySubscriptionPayloadSubscription;
+  round: (
+    where?: RoundSubscriptionWhereInput
+  ) => RoundSubscriptionPayloadSubscription;
   user: (
     where?: UserSubscriptionWhereInput
   ) => UserSubscriptionPayloadSubscription;
@@ -142,29 +173,37 @@ export interface ClientConstructor<T> {
  * Types
  */
 
-export type PostOrderByInput =
+export type RoundOrderByInput =
+  | "id_ASC"
+  | "id_DESC"
+  | "word1_ASC"
+  | "word1_DESC"
+  | "word2_ASC"
+  | "word2_DESC"
+  | "createdAt_ASC"
+  | "createdAt_DESC"
+  | "updatedAt_ASC"
+  | "updatedAt_DESC";
+
+export type LobbyOrderByInput =
   | "id_ASC"
   | "id_DESC"
   | "createdAt_ASC"
   | "createdAt_DESC"
   | "updatedAt_ASC"
   | "updatedAt_DESC"
-  | "published_ASC"
-  | "published_DESC"
-  | "title_ASC"
-  | "title_DESC"
-  | "content_ASC"
-  | "content_DESC";
+  | "started_ASC"
+  | "started_DESC"
+  | "creator_word_ASC"
+  | "creator_word_DESC"
+  | "partner_word_ASC"
+  | "partner_word_DESC";
 
 export type UserOrderByInput =
   | "id_ASC"
   | "id_DESC"
-  | "email_ASC"
-  | "email_DESC"
-  | "password_ASC"
-  | "password_DESC"
-  | "name_ASC"
-  | "name_DESC"
+  | "nick_ASC"
+  | "nick_DESC"
   | "createdAt_ASC"
   | "createdAt_DESC"
   | "updatedAt_ASC"
@@ -172,49 +211,127 @@ export type UserOrderByInput =
 
 export type MutationType = "CREATED" | "UPDATED" | "DELETED";
 
-export interface UserUpdateOneRequiredWithoutPostsInput {
-  create?: UserCreateWithoutPostsInput;
-  update?: UserUpdateWithoutPostsDataInput;
-  upsert?: UserUpsertWithoutPostsInput;
-  connect?: UserWhereUniqueInput;
-}
-
-export type PostWhereUniqueInput = AtLeastOne<{
+export type LobbyWhereUniqueInput = AtLeastOne<{
   id: ID_Input;
 }>;
 
-export interface PostUpdateWithWhereUniqueWithoutAuthorInput {
-  where: PostWhereUniqueInput;
-  data: PostUpdateWithoutAuthorDataInput;
+export interface RoundWhereInput {
+  id?: ID_Input;
+  id_not?: ID_Input;
+  id_in?: ID_Input[] | ID_Input;
+  id_not_in?: ID_Input[] | ID_Input;
+  id_lt?: ID_Input;
+  id_lte?: ID_Input;
+  id_gt?: ID_Input;
+  id_gte?: ID_Input;
+  id_contains?: ID_Input;
+  id_not_contains?: ID_Input;
+  id_starts_with?: ID_Input;
+  id_not_starts_with?: ID_Input;
+  id_ends_with?: ID_Input;
+  id_not_ends_with?: ID_Input;
+  word1?: String;
+  word1_not?: String;
+  word1_in?: String[] | String;
+  word1_not_in?: String[] | String;
+  word1_lt?: String;
+  word1_lte?: String;
+  word1_gt?: String;
+  word1_gte?: String;
+  word1_contains?: String;
+  word1_not_contains?: String;
+  word1_starts_with?: String;
+  word1_not_starts_with?: String;
+  word1_ends_with?: String;
+  word1_not_ends_with?: String;
+  word2?: String;
+  word2_not?: String;
+  word2_in?: String[] | String;
+  word2_not_in?: String[] | String;
+  word2_lt?: String;
+  word2_lte?: String;
+  word2_gt?: String;
+  word2_gte?: String;
+  word2_contains?: String;
+  word2_not_contains?: String;
+  word2_starts_with?: String;
+  word2_not_starts_with?: String;
+  word2_ends_with?: String;
+  word2_not_ends_with?: String;
+  AND?: RoundWhereInput[] | RoundWhereInput;
+  OR?: RoundWhereInput[] | RoundWhereInput;
+  NOT?: RoundWhereInput[] | RoundWhereInput;
 }
 
-export interface UserCreateInput {
-  email: String;
-  password: String;
-  name: String;
-  posts?: PostCreateManyWithoutAuthorInput;
-}
-
-export interface PostUpdateManyWithoutAuthorInput {
-  create?: PostCreateWithoutAuthorInput[] | PostCreateWithoutAuthorInput;
-  delete?: PostWhereUniqueInput[] | PostWhereUniqueInput;
-  connect?: PostWhereUniqueInput[] | PostWhereUniqueInput;
-  disconnect?: PostWhereUniqueInput[] | PostWhereUniqueInput;
-  update?:
-    | PostUpdateWithWhereUniqueWithoutAuthorInput[]
-    | PostUpdateWithWhereUniqueWithoutAuthorInput;
-  upsert?:
-    | PostUpsertWithWhereUniqueWithoutAuthorInput[]
-    | PostUpsertWithWhereUniqueWithoutAuthorInput;
-  deleteMany?: PostScalarWhereInput[] | PostScalarWhereInput;
-  updateMany?:
-    | PostUpdateManyWithWhereNestedInput[]
-    | PostUpdateManyWithWhereNestedInput;
-}
-
-export interface UserUpsertWithoutPostsInput {
-  update: UserUpdateWithoutPostsDataInput;
-  create: UserCreateWithoutPostsInput;
+export interface LobbyWhereInput {
+  id?: ID_Input;
+  id_not?: ID_Input;
+  id_in?: ID_Input[] | ID_Input;
+  id_not_in?: ID_Input[] | ID_Input;
+  id_lt?: ID_Input;
+  id_lte?: ID_Input;
+  id_gt?: ID_Input;
+  id_gte?: ID_Input;
+  id_contains?: ID_Input;
+  id_not_contains?: ID_Input;
+  id_starts_with?: ID_Input;
+  id_not_starts_with?: ID_Input;
+  id_ends_with?: ID_Input;
+  id_not_ends_with?: ID_Input;
+  createdAt?: DateTimeInput;
+  createdAt_not?: DateTimeInput;
+  createdAt_in?: DateTimeInput[] | DateTimeInput;
+  createdAt_not_in?: DateTimeInput[] | DateTimeInput;
+  createdAt_lt?: DateTimeInput;
+  createdAt_lte?: DateTimeInput;
+  createdAt_gt?: DateTimeInput;
+  createdAt_gte?: DateTimeInput;
+  updatedAt?: DateTimeInput;
+  updatedAt_not?: DateTimeInput;
+  updatedAt_in?: DateTimeInput[] | DateTimeInput;
+  updatedAt_not_in?: DateTimeInput[] | DateTimeInput;
+  updatedAt_lt?: DateTimeInput;
+  updatedAt_lte?: DateTimeInput;
+  updatedAt_gt?: DateTimeInput;
+  updatedAt_gte?: DateTimeInput;
+  started?: Boolean;
+  started_not?: Boolean;
+  creator?: UserWhereInput;
+  partner?: UserWhereInput;
+  creator_word?: String;
+  creator_word_not?: String;
+  creator_word_in?: String[] | String;
+  creator_word_not_in?: String[] | String;
+  creator_word_lt?: String;
+  creator_word_lte?: String;
+  creator_word_gt?: String;
+  creator_word_gte?: String;
+  creator_word_contains?: String;
+  creator_word_not_contains?: String;
+  creator_word_starts_with?: String;
+  creator_word_not_starts_with?: String;
+  creator_word_ends_with?: String;
+  creator_word_not_ends_with?: String;
+  partner_word?: String;
+  partner_word_not?: String;
+  partner_word_in?: String[] | String;
+  partner_word_not_in?: String[] | String;
+  partner_word_lt?: String;
+  partner_word_lte?: String;
+  partner_word_gt?: String;
+  partner_word_gte?: String;
+  partner_word_contains?: String;
+  partner_word_not_contains?: String;
+  partner_word_starts_with?: String;
+  partner_word_not_starts_with?: String;
+  partner_word_ends_with?: String;
+  partner_word_not_ends_with?: String;
+  rounds_every?: RoundWhereInput;
+  rounds_some?: RoundWhereInput;
+  rounds_none?: RoundWhereInput;
+  AND?: LobbyWhereInput[] | LobbyWhereInput;
+  OR?: LobbyWhereInput[] | LobbyWhereInput;
+  NOT?: LobbyWhereInput[] | LobbyWhereInput;
 }
 
 export interface UserWhereInput {
@@ -232,276 +349,230 @@ export interface UserWhereInput {
   id_not_starts_with?: ID_Input;
   id_ends_with?: ID_Input;
   id_not_ends_with?: ID_Input;
-  email?: String;
-  email_not?: String;
-  email_in?: String[] | String;
-  email_not_in?: String[] | String;
-  email_lt?: String;
-  email_lte?: String;
-  email_gt?: String;
-  email_gte?: String;
-  email_contains?: String;
-  email_not_contains?: String;
-  email_starts_with?: String;
-  email_not_starts_with?: String;
-  email_ends_with?: String;
-  email_not_ends_with?: String;
-  password?: String;
-  password_not?: String;
-  password_in?: String[] | String;
-  password_not_in?: String[] | String;
-  password_lt?: String;
-  password_lte?: String;
-  password_gt?: String;
-  password_gte?: String;
-  password_contains?: String;
-  password_not_contains?: String;
-  password_starts_with?: String;
-  password_not_starts_with?: String;
-  password_ends_with?: String;
-  password_not_ends_with?: String;
-  name?: String;
-  name_not?: String;
-  name_in?: String[] | String;
-  name_not_in?: String[] | String;
-  name_lt?: String;
-  name_lte?: String;
-  name_gt?: String;
-  name_gte?: String;
-  name_contains?: String;
-  name_not_contains?: String;
-  name_starts_with?: String;
-  name_not_starts_with?: String;
-  name_ends_with?: String;
-  name_not_ends_with?: String;
-  posts_every?: PostWhereInput;
-  posts_some?: PostWhereInput;
-  posts_none?: PostWhereInput;
+  nick?: String;
+  nick_not?: String;
+  nick_in?: String[] | String;
+  nick_not_in?: String[] | String;
+  nick_lt?: String;
+  nick_lte?: String;
+  nick_gt?: String;
+  nick_gte?: String;
+  nick_contains?: String;
+  nick_not_contains?: String;
+  nick_starts_with?: String;
+  nick_not_starts_with?: String;
+  nick_ends_with?: String;
+  nick_not_ends_with?: String;
   AND?: UserWhereInput[] | UserWhereInput;
   OR?: UserWhereInput[] | UserWhereInput;
   NOT?: UserWhereInput[] | UserWhereInput;
 }
 
-export interface PostSubscriptionWhereInput {
+export type RoundWhereUniqueInput = AtLeastOne<{
+  id: ID_Input;
+}>;
+
+export type UserWhereUniqueInput = AtLeastOne<{
+  id: ID_Input;
+}>;
+
+export interface LobbyCreateInput {
+  started: Boolean;
+  creator: UserCreateOneInput;
+  partner?: UserCreateOneInput;
+  creator_word?: String;
+  partner_word?: String;
+  rounds?: RoundCreateManyInput;
+}
+
+export interface UserCreateOneInput {
+  create?: UserCreateInput;
+  connect?: UserWhereUniqueInput;
+}
+
+export interface UserCreateInput {
+  nick: String;
+}
+
+export interface RoundCreateManyInput {
+  create?: RoundCreateInput[] | RoundCreateInput;
+  connect?: RoundWhereUniqueInput[] | RoundWhereUniqueInput;
+}
+
+export interface RoundCreateInput {
+  word1: String;
+  word2: String;
+}
+
+export interface LobbyUpdateInput {
+  started?: Boolean;
+  creator?: UserUpdateOneRequiredInput;
+  partner?: UserUpdateOneInput;
+  creator_word?: String;
+  partner_word?: String;
+  rounds?: RoundUpdateManyInput;
+}
+
+export interface UserUpdateOneRequiredInput {
+  create?: UserCreateInput;
+  update?: UserUpdateDataInput;
+  upsert?: UserUpsertNestedInput;
+  connect?: UserWhereUniqueInput;
+}
+
+export interface UserUpdateDataInput {
+  nick?: String;
+}
+
+export interface UserUpsertNestedInput {
+  update: UserUpdateDataInput;
+  create: UserCreateInput;
+}
+
+export interface UserUpdateOneInput {
+  create?: UserCreateInput;
+  update?: UserUpdateDataInput;
+  upsert?: UserUpsertNestedInput;
+  delete?: Boolean;
+  disconnect?: Boolean;
+  connect?: UserWhereUniqueInput;
+}
+
+export interface RoundUpdateManyInput {
+  create?: RoundCreateInput[] | RoundCreateInput;
+  update?:
+    | RoundUpdateWithWhereUniqueNestedInput[]
+    | RoundUpdateWithWhereUniqueNestedInput;
+  upsert?:
+    | RoundUpsertWithWhereUniqueNestedInput[]
+    | RoundUpsertWithWhereUniqueNestedInput;
+  delete?: RoundWhereUniqueInput[] | RoundWhereUniqueInput;
+  connect?: RoundWhereUniqueInput[] | RoundWhereUniqueInput;
+  disconnect?: RoundWhereUniqueInput[] | RoundWhereUniqueInput;
+  deleteMany?: RoundScalarWhereInput[] | RoundScalarWhereInput;
+  updateMany?:
+    | RoundUpdateManyWithWhereNestedInput[]
+    | RoundUpdateManyWithWhereNestedInput;
+}
+
+export interface RoundUpdateWithWhereUniqueNestedInput {
+  where: RoundWhereUniqueInput;
+  data: RoundUpdateDataInput;
+}
+
+export interface RoundUpdateDataInput {
+  word1?: String;
+  word2?: String;
+}
+
+export interface RoundUpsertWithWhereUniqueNestedInput {
+  where: RoundWhereUniqueInput;
+  update: RoundUpdateDataInput;
+  create: RoundCreateInput;
+}
+
+export interface RoundScalarWhereInput {
+  id?: ID_Input;
+  id_not?: ID_Input;
+  id_in?: ID_Input[] | ID_Input;
+  id_not_in?: ID_Input[] | ID_Input;
+  id_lt?: ID_Input;
+  id_lte?: ID_Input;
+  id_gt?: ID_Input;
+  id_gte?: ID_Input;
+  id_contains?: ID_Input;
+  id_not_contains?: ID_Input;
+  id_starts_with?: ID_Input;
+  id_not_starts_with?: ID_Input;
+  id_ends_with?: ID_Input;
+  id_not_ends_with?: ID_Input;
+  word1?: String;
+  word1_not?: String;
+  word1_in?: String[] | String;
+  word1_not_in?: String[] | String;
+  word1_lt?: String;
+  word1_lte?: String;
+  word1_gt?: String;
+  word1_gte?: String;
+  word1_contains?: String;
+  word1_not_contains?: String;
+  word1_starts_with?: String;
+  word1_not_starts_with?: String;
+  word1_ends_with?: String;
+  word1_not_ends_with?: String;
+  word2?: String;
+  word2_not?: String;
+  word2_in?: String[] | String;
+  word2_not_in?: String[] | String;
+  word2_lt?: String;
+  word2_lte?: String;
+  word2_gt?: String;
+  word2_gte?: String;
+  word2_contains?: String;
+  word2_not_contains?: String;
+  word2_starts_with?: String;
+  word2_not_starts_with?: String;
+  word2_ends_with?: String;
+  word2_not_ends_with?: String;
+  AND?: RoundScalarWhereInput[] | RoundScalarWhereInput;
+  OR?: RoundScalarWhereInput[] | RoundScalarWhereInput;
+  NOT?: RoundScalarWhereInput[] | RoundScalarWhereInput;
+}
+
+export interface RoundUpdateManyWithWhereNestedInput {
+  where: RoundScalarWhereInput;
+  data: RoundUpdateManyDataInput;
+}
+
+export interface RoundUpdateManyDataInput {
+  word1?: String;
+  word2?: String;
+}
+
+export interface LobbyUpdateManyMutationInput {
+  started?: Boolean;
+  creator_word?: String;
+  partner_word?: String;
+}
+
+export interface RoundUpdateInput {
+  word1?: String;
+  word2?: String;
+}
+
+export interface RoundUpdateManyMutationInput {
+  word1?: String;
+  word2?: String;
+}
+
+export interface UserUpdateInput {
+  nick?: String;
+}
+
+export interface UserUpdateManyMutationInput {
+  nick?: String;
+}
+
+export interface LobbySubscriptionWhereInput {
   mutation_in?: MutationType[] | MutationType;
   updatedFields_contains?: String;
   updatedFields_contains_every?: String[] | String;
   updatedFields_contains_some?: String[] | String;
-  node?: PostWhereInput;
-  AND?: PostSubscriptionWhereInput[] | PostSubscriptionWhereInput;
-  OR?: PostSubscriptionWhereInput[] | PostSubscriptionWhereInput;
-  NOT?: PostSubscriptionWhereInput[] | PostSubscriptionWhereInput;
+  node?: LobbyWhereInput;
+  AND?: LobbySubscriptionWhereInput[] | LobbySubscriptionWhereInput;
+  OR?: LobbySubscriptionWhereInput[] | LobbySubscriptionWhereInput;
+  NOT?: LobbySubscriptionWhereInput[] | LobbySubscriptionWhereInput;
 }
 
-export interface PostCreateInput {
-  published?: Boolean;
-  title: String;
-  content: String;
-  author: UserCreateOneWithoutPostsInput;
-}
-
-export interface PostUpdateManyDataInput {
-  published?: Boolean;
-  title?: String;
-  content?: String;
-}
-
-export interface UserCreateOneWithoutPostsInput {
-  create?: UserCreateWithoutPostsInput;
-  connect?: UserWhereUniqueInput;
-}
-
-export interface PostScalarWhereInput {
-  id?: ID_Input;
-  id_not?: ID_Input;
-  id_in?: ID_Input[] | ID_Input;
-  id_not_in?: ID_Input[] | ID_Input;
-  id_lt?: ID_Input;
-  id_lte?: ID_Input;
-  id_gt?: ID_Input;
-  id_gte?: ID_Input;
-  id_contains?: ID_Input;
-  id_not_contains?: ID_Input;
-  id_starts_with?: ID_Input;
-  id_not_starts_with?: ID_Input;
-  id_ends_with?: ID_Input;
-  id_not_ends_with?: ID_Input;
-  createdAt?: DateTimeInput;
-  createdAt_not?: DateTimeInput;
-  createdAt_in?: DateTimeInput[] | DateTimeInput;
-  createdAt_not_in?: DateTimeInput[] | DateTimeInput;
-  createdAt_lt?: DateTimeInput;
-  createdAt_lte?: DateTimeInput;
-  createdAt_gt?: DateTimeInput;
-  createdAt_gte?: DateTimeInput;
-  updatedAt?: DateTimeInput;
-  updatedAt_not?: DateTimeInput;
-  updatedAt_in?: DateTimeInput[] | DateTimeInput;
-  updatedAt_not_in?: DateTimeInput[] | DateTimeInput;
-  updatedAt_lt?: DateTimeInput;
-  updatedAt_lte?: DateTimeInput;
-  updatedAt_gt?: DateTimeInput;
-  updatedAt_gte?: DateTimeInput;
-  published?: Boolean;
-  published_not?: Boolean;
-  title?: String;
-  title_not?: String;
-  title_in?: String[] | String;
-  title_not_in?: String[] | String;
-  title_lt?: String;
-  title_lte?: String;
-  title_gt?: String;
-  title_gte?: String;
-  title_contains?: String;
-  title_not_contains?: String;
-  title_starts_with?: String;
-  title_not_starts_with?: String;
-  title_ends_with?: String;
-  title_not_ends_with?: String;
-  content?: String;
-  content_not?: String;
-  content_in?: String[] | String;
-  content_not_in?: String[] | String;
-  content_lt?: String;
-  content_lte?: String;
-  content_gt?: String;
-  content_gte?: String;
-  content_contains?: String;
-  content_not_contains?: String;
-  content_starts_with?: String;
-  content_not_starts_with?: String;
-  content_ends_with?: String;
-  content_not_ends_with?: String;
-  AND?: PostScalarWhereInput[] | PostScalarWhereInput;
-  OR?: PostScalarWhereInput[] | PostScalarWhereInput;
-  NOT?: PostScalarWhereInput[] | PostScalarWhereInput;
-}
-
-export interface UserCreateWithoutPostsInput {
-  email: String;
-  password: String;
-  name: String;
-}
-
-export interface PostUpsertWithWhereUniqueWithoutAuthorInput {
-  where: PostWhereUniqueInput;
-  update: PostUpdateWithoutAuthorDataInput;
-  create: PostCreateWithoutAuthorInput;
-}
-
-export interface PostUpdateInput {
-  published?: Boolean;
-  title?: String;
-  content?: String;
-  author?: UserUpdateOneRequiredWithoutPostsInput;
-}
-
-export interface PostWhereInput {
-  id?: ID_Input;
-  id_not?: ID_Input;
-  id_in?: ID_Input[] | ID_Input;
-  id_not_in?: ID_Input[] | ID_Input;
-  id_lt?: ID_Input;
-  id_lte?: ID_Input;
-  id_gt?: ID_Input;
-  id_gte?: ID_Input;
-  id_contains?: ID_Input;
-  id_not_contains?: ID_Input;
-  id_starts_with?: ID_Input;
-  id_not_starts_with?: ID_Input;
-  id_ends_with?: ID_Input;
-  id_not_ends_with?: ID_Input;
-  createdAt?: DateTimeInput;
-  createdAt_not?: DateTimeInput;
-  createdAt_in?: DateTimeInput[] | DateTimeInput;
-  createdAt_not_in?: DateTimeInput[] | DateTimeInput;
-  createdAt_lt?: DateTimeInput;
-  createdAt_lte?: DateTimeInput;
-  createdAt_gt?: DateTimeInput;
-  createdAt_gte?: DateTimeInput;
-  updatedAt?: DateTimeInput;
-  updatedAt_not?: DateTimeInput;
-  updatedAt_in?: DateTimeInput[] | DateTimeInput;
-  updatedAt_not_in?: DateTimeInput[] | DateTimeInput;
-  updatedAt_lt?: DateTimeInput;
-  updatedAt_lte?: DateTimeInput;
-  updatedAt_gt?: DateTimeInput;
-  updatedAt_gte?: DateTimeInput;
-  published?: Boolean;
-  published_not?: Boolean;
-  title?: String;
-  title_not?: String;
-  title_in?: String[] | String;
-  title_not_in?: String[] | String;
-  title_lt?: String;
-  title_lte?: String;
-  title_gt?: String;
-  title_gte?: String;
-  title_contains?: String;
-  title_not_contains?: String;
-  title_starts_with?: String;
-  title_not_starts_with?: String;
-  title_ends_with?: String;
-  title_not_ends_with?: String;
-  content?: String;
-  content_not?: String;
-  content_in?: String[] | String;
-  content_not_in?: String[] | String;
-  content_lt?: String;
-  content_lte?: String;
-  content_gt?: String;
-  content_gte?: String;
-  content_contains?: String;
-  content_not_contains?: String;
-  content_starts_with?: String;
-  content_not_starts_with?: String;
-  content_ends_with?: String;
-  content_not_ends_with?: String;
-  author?: UserWhereInput;
-  AND?: PostWhereInput[] | PostWhereInput;
-  OR?: PostWhereInput[] | PostWhereInput;
-  NOT?: PostWhereInput[] | PostWhereInput;
-}
-
-export interface UserUpdateInput {
-  email?: String;
-  password?: String;
-  name?: String;
-  posts?: PostUpdateManyWithoutAuthorInput;
-}
-
-export interface UserUpdateManyMutationInput {
-  email?: String;
-  password?: String;
-  name?: String;
-}
-
-export interface PostCreateManyWithoutAuthorInput {
-  create?: PostCreateWithoutAuthorInput[] | PostCreateWithoutAuthorInput;
-  connect?: PostWhereUniqueInput[] | PostWhereUniqueInput;
-}
-
-export interface PostUpdateManyMutationInput {
-  published?: Boolean;
-  title?: String;
-  content?: String;
-}
-
-export interface PostCreateWithoutAuthorInput {
-  published?: Boolean;
-  title: String;
-  content: String;
-}
-
-export interface UserUpdateWithoutPostsDataInput {
-  email?: String;
-  password?: String;
-  name?: String;
-}
-
-export interface PostUpdateManyWithWhereNestedInput {
-  where: PostScalarWhereInput;
-  data: PostUpdateManyDataInput;
+export interface RoundSubscriptionWhereInput {
+  mutation_in?: MutationType[] | MutationType;
+  updatedFields_contains?: String;
+  updatedFields_contains_every?: String[] | String;
+  updatedFields_contains_some?: String[] | String;
+  node?: RoundWhereInput;
+  AND?: RoundSubscriptionWhereInput[] | RoundSubscriptionWhereInput;
+  OR?: RoundSubscriptionWhereInput[] | RoundSubscriptionWhereInput;
+  NOT?: RoundSubscriptionWhereInput[] | RoundSubscriptionWhereInput;
 }
 
 export interface UserSubscriptionWhereInput {
@@ -515,202 +586,114 @@ export interface UserSubscriptionWhereInput {
   NOT?: UserSubscriptionWhereInput[] | UserSubscriptionWhereInput;
 }
 
-export interface PostUpdateWithoutAuthorDataInput {
-  published?: Boolean;
-  title?: String;
-  content?: String;
-}
-
-export type UserWhereUniqueInput = AtLeastOne<{
-  id: ID_Input;
-  email?: String;
-}>;
-
 export interface NodeNode {
   id: ID_Output;
 }
 
-export interface UserPreviousValues {
-  id: ID_Output;
-  email: String;
-  password: String;
-  name: String;
-}
-
-export interface UserPreviousValuesPromise
-  extends Promise<UserPreviousValues>,
-    Fragmentable {
-  id: () => Promise<ID_Output>;
-  email: () => Promise<String>;
-  password: () => Promise<String>;
-  name: () => Promise<String>;
-}
-
-export interface UserPreviousValuesSubscription
-  extends Promise<AsyncIterator<UserPreviousValues>>,
-    Fragmentable {
-  id: () => Promise<AsyncIterator<ID_Output>>;
-  email: () => Promise<AsyncIterator<String>>;
-  password: () => Promise<AsyncIterator<String>>;
-  name: () => Promise<AsyncIterator<String>>;
-}
-
-export interface PostPreviousValues {
+export interface Lobby {
   id: ID_Output;
   createdAt: DateTimeOutput;
   updatedAt: DateTimeOutput;
-  published: Boolean;
-  title: String;
-  content: String;
+  started: Boolean;
+  creator_word?: String;
+  partner_word?: String;
 }
 
-export interface PostPreviousValuesPromise
-  extends Promise<PostPreviousValues>,
-    Fragmentable {
+export interface LobbyPromise extends Promise<Lobby>, Fragmentable {
   id: () => Promise<ID_Output>;
   createdAt: () => Promise<DateTimeOutput>;
   updatedAt: () => Promise<DateTimeOutput>;
-  published: () => Promise<Boolean>;
-  title: () => Promise<String>;
-  content: () => Promise<String>;
+  started: () => Promise<Boolean>;
+  creator: <T = UserPromise>() => T;
+  partner: <T = UserPromise>() => T;
+  creator_word: () => Promise<String>;
+  partner_word: () => Promise<String>;
+  rounds: <T = FragmentableArray<Round>>(args?: {
+    where?: RoundWhereInput;
+    orderBy?: RoundOrderByInput;
+    skip?: Int;
+    after?: String;
+    before?: String;
+    first?: Int;
+    last?: Int;
+  }) => T;
 }
 
-export interface PostPreviousValuesSubscription
-  extends Promise<AsyncIterator<PostPreviousValues>>,
+export interface LobbySubscription
+  extends Promise<AsyncIterator<Lobby>>,
     Fragmentable {
   id: () => Promise<AsyncIterator<ID_Output>>;
   createdAt: () => Promise<AsyncIterator<DateTimeOutput>>;
   updatedAt: () => Promise<AsyncIterator<DateTimeOutput>>;
-  published: () => Promise<AsyncIterator<Boolean>>;
-  title: () => Promise<AsyncIterator<String>>;
-  content: () => Promise<AsyncIterator<String>>;
+  started: () => Promise<AsyncIterator<Boolean>>;
+  creator: <T = UserSubscription>() => T;
+  partner: <T = UserSubscription>() => T;
+  creator_word: () => Promise<AsyncIterator<String>>;
+  partner_word: () => Promise<AsyncIterator<String>>;
+  rounds: <T = Promise<AsyncIterator<RoundSubscription>>>(args?: {
+    where?: RoundWhereInput;
+    orderBy?: RoundOrderByInput;
+    skip?: Int;
+    after?: String;
+    before?: String;
+    first?: Int;
+    last?: Int;
+  }) => T;
 }
 
-export interface Post {
+export interface User {
   id: ID_Output;
-  createdAt: DateTimeOutput;
-  updatedAt: DateTimeOutput;
-  published: Boolean;
-  title: String;
-  content: String;
+  nick: String;
 }
 
-export interface PostPromise extends Promise<Post>, Fragmentable {
+export interface UserPromise extends Promise<User>, Fragmentable {
   id: () => Promise<ID_Output>;
-  createdAt: () => Promise<DateTimeOutput>;
-  updatedAt: () => Promise<DateTimeOutput>;
-  published: () => Promise<Boolean>;
-  title: () => Promise<String>;
-  content: () => Promise<String>;
-  author: <T = UserPromise>() => T;
+  nick: () => Promise<String>;
 }
 
-export interface PostSubscription
-  extends Promise<AsyncIterator<Post>>,
+export interface UserSubscription
+  extends Promise<AsyncIterator<User>>,
     Fragmentable {
   id: () => Promise<AsyncIterator<ID_Output>>;
-  createdAt: () => Promise<AsyncIterator<DateTimeOutput>>;
-  updatedAt: () => Promise<AsyncIterator<DateTimeOutput>>;
-  published: () => Promise<AsyncIterator<Boolean>>;
-  title: () => Promise<AsyncIterator<String>>;
-  content: () => Promise<AsyncIterator<String>>;
-  author: <T = UserSubscription>() => T;
+  nick: () => Promise<AsyncIterator<String>>;
 }
 
-export interface AggregatePost {
-  count: Int;
+export interface Round {
+  id: ID_Output;
+  word1: String;
+  word2: String;
 }
 
-export interface AggregatePostPromise
-  extends Promise<AggregatePost>,
+export interface RoundPromise extends Promise<Round>, Fragmentable {
+  id: () => Promise<ID_Output>;
+  word1: () => Promise<String>;
+  word2: () => Promise<String>;
+}
+
+export interface RoundSubscription
+  extends Promise<AsyncIterator<Round>>,
     Fragmentable {
-  count: () => Promise<Int>;
+  id: () => Promise<AsyncIterator<ID_Output>>;
+  word1: () => Promise<AsyncIterator<String>>;
+  word2: () => Promise<AsyncIterator<String>>;
 }
 
-export interface AggregatePostSubscription
-  extends Promise<AsyncIterator<AggregatePost>>,
-    Fragmentable {
-  count: () => Promise<AsyncIterator<Int>>;
-}
+export interface LobbyConnection {}
 
-export interface PostEdge {
-  cursor: String;
-}
-
-export interface PostEdgePromise extends Promise<PostEdge>, Fragmentable {
-  node: <T = PostPromise>() => T;
-  cursor: () => Promise<String>;
-}
-
-export interface PostEdgeSubscription
-  extends Promise<AsyncIterator<PostEdge>>,
-    Fragmentable {
-  node: <T = PostSubscription>() => T;
-  cursor: () => Promise<AsyncIterator<String>>;
-}
-
-export interface UserSubscriptionPayload {
-  mutation: MutationType;
-  updatedFields?: String[];
-}
-
-export interface UserSubscriptionPayloadPromise
-  extends Promise<UserSubscriptionPayload>,
-    Fragmentable {
-  mutation: () => Promise<MutationType>;
-  node: <T = UserPromise>() => T;
-  updatedFields: () => Promise<String[]>;
-  previousValues: <T = UserPreviousValuesPromise>() => T;
-}
-
-export interface UserSubscriptionPayloadSubscription
-  extends Promise<AsyncIterator<UserSubscriptionPayload>>,
-    Fragmentable {
-  mutation: () => Promise<AsyncIterator<MutationType>>;
-  node: <T = UserSubscription>() => T;
-  updatedFields: () => Promise<AsyncIterator<String[]>>;
-  previousValues: <T = UserPreviousValuesSubscription>() => T;
-}
-
-export interface PostSubscriptionPayload {
-  mutation: MutationType;
-  updatedFields?: String[];
-}
-
-export interface PostSubscriptionPayloadPromise
-  extends Promise<PostSubscriptionPayload>,
-    Fragmentable {
-  mutation: () => Promise<MutationType>;
-  node: <T = PostPromise>() => T;
-  updatedFields: () => Promise<String[]>;
-  previousValues: <T = PostPreviousValuesPromise>() => T;
-}
-
-export interface PostSubscriptionPayloadSubscription
-  extends Promise<AsyncIterator<PostSubscriptionPayload>>,
-    Fragmentable {
-  mutation: () => Promise<AsyncIterator<MutationType>>;
-  node: <T = PostSubscription>() => T;
-  updatedFields: () => Promise<AsyncIterator<String[]>>;
-  previousValues: <T = PostPreviousValuesSubscription>() => T;
-}
-
-export interface PostConnection {}
-
-export interface PostConnectionPromise
-  extends Promise<PostConnection>,
+export interface LobbyConnectionPromise
+  extends Promise<LobbyConnection>,
     Fragmentable {
   pageInfo: <T = PageInfoPromise>() => T;
-  edges: <T = FragmentableArray<PostEdge>>() => T;
-  aggregate: <T = AggregatePostPromise>() => T;
+  edges: <T = FragmentableArray<LobbyEdge>>() => T;
+  aggregate: <T = AggregateLobbyPromise>() => T;
 }
 
-export interface PostConnectionSubscription
-  extends Promise<AsyncIterator<PostConnection>>,
+export interface LobbyConnectionSubscription
+  extends Promise<AsyncIterator<LobbyConnection>>,
     Fragmentable {
   pageInfo: <T = PageInfoSubscription>() => T;
-  edges: <T = Promise<AsyncIterator<PostEdgeSubscription>>>() => T;
-  aggregate: <T = AggregatePostSubscription>() => T;
+  edges: <T = Promise<AsyncIterator<LobbyEdgeSubscription>>>() => T;
+  aggregate: <T = AggregateLobbySubscription>() => T;
 }
 
 export interface PageInfo {
@@ -736,81 +719,86 @@ export interface PageInfoSubscription
   endCursor: () => Promise<AsyncIterator<String>>;
 }
 
-export interface BatchPayload {
-  count: Long;
+export interface LobbyEdge {
+  cursor: String;
 }
 
-export interface BatchPayloadPromise
-  extends Promise<BatchPayload>,
+export interface LobbyEdgePromise extends Promise<LobbyEdge>, Fragmentable {
+  node: <T = LobbyPromise>() => T;
+  cursor: () => Promise<String>;
+}
+
+export interface LobbyEdgeSubscription
+  extends Promise<AsyncIterator<LobbyEdge>>,
     Fragmentable {
-  count: () => Promise<Long>;
+  node: <T = LobbySubscription>() => T;
+  cursor: () => Promise<AsyncIterator<String>>;
 }
 
-export interface BatchPayloadSubscription
-  extends Promise<AsyncIterator<BatchPayload>>,
-    Fragmentable {
-  count: () => Promise<AsyncIterator<Long>>;
-}
-
-export interface AggregateUser {
+export interface AggregateLobby {
   count: Int;
 }
 
-export interface AggregateUserPromise
-  extends Promise<AggregateUser>,
+export interface AggregateLobbyPromise
+  extends Promise<AggregateLobby>,
     Fragmentable {
   count: () => Promise<Int>;
 }
 
-export interface AggregateUserSubscription
-  extends Promise<AsyncIterator<AggregateUser>>,
+export interface AggregateLobbySubscription
+  extends Promise<AsyncIterator<AggregateLobby>>,
     Fragmentable {
   count: () => Promise<AsyncIterator<Int>>;
 }
 
-export interface User {
-  id: ID_Output;
-  email: String;
-  password: String;
-  name: String;
-}
+export interface RoundConnection {}
 
-export interface UserPromise extends Promise<User>, Fragmentable {
-  id: () => Promise<ID_Output>;
-  email: () => Promise<String>;
-  password: () => Promise<String>;
-  name: () => Promise<String>;
-  posts: <T = FragmentableArray<Post>>(
-    args?: {
-      where?: PostWhereInput;
-      orderBy?: PostOrderByInput;
-      skip?: Int;
-      after?: String;
-      before?: String;
-      first?: Int;
-      last?: Int;
-    }
-  ) => T;
-}
-
-export interface UserSubscription
-  extends Promise<AsyncIterator<User>>,
+export interface RoundConnectionPromise
+  extends Promise<RoundConnection>,
     Fragmentable {
-  id: () => Promise<AsyncIterator<ID_Output>>;
-  email: () => Promise<AsyncIterator<String>>;
-  password: () => Promise<AsyncIterator<String>>;
-  name: () => Promise<AsyncIterator<String>>;
-  posts: <T = Promise<AsyncIterator<PostSubscription>>>(
-    args?: {
-      where?: PostWhereInput;
-      orderBy?: PostOrderByInput;
-      skip?: Int;
-      after?: String;
-      before?: String;
-      first?: Int;
-      last?: Int;
-    }
-  ) => T;
+  pageInfo: <T = PageInfoPromise>() => T;
+  edges: <T = FragmentableArray<RoundEdge>>() => T;
+  aggregate: <T = AggregateRoundPromise>() => T;
+}
+
+export interface RoundConnectionSubscription
+  extends Promise<AsyncIterator<RoundConnection>>,
+    Fragmentable {
+  pageInfo: <T = PageInfoSubscription>() => T;
+  edges: <T = Promise<AsyncIterator<RoundEdgeSubscription>>>() => T;
+  aggregate: <T = AggregateRoundSubscription>() => T;
+}
+
+export interface RoundEdge {
+  cursor: String;
+}
+
+export interface RoundEdgePromise extends Promise<RoundEdge>, Fragmentable {
+  node: <T = RoundPromise>() => T;
+  cursor: () => Promise<String>;
+}
+
+export interface RoundEdgeSubscription
+  extends Promise<AsyncIterator<RoundEdge>>,
+    Fragmentable {
+  node: <T = RoundSubscription>() => T;
+  cursor: () => Promise<AsyncIterator<String>>;
+}
+
+export interface AggregateRound {
+  count: Int;
+}
+
+export interface AggregateRoundPromise
+  extends Promise<AggregateRound>,
+    Fragmentable {
+  count: () => Promise<Int>;
+}
+
+export interface AggregateRoundSubscription
+  extends Promise<AsyncIterator<AggregateRound>>,
+    Fragmentable {
+  count: () => Promise<AsyncIterator<Int>>;
 }
 
 export interface UserConnection {}
@@ -847,23 +835,184 @@ export interface UserEdgeSubscription
   cursor: () => Promise<AsyncIterator<String>>;
 }
 
-/*
-The `String` scalar type represents textual data, represented as UTF-8 character sequences. The String type is most often used by GraphQL to represent free-form human-readable text.
-*/
-export type String = string;
+export interface AggregateUser {
+  count: Int;
+}
 
-export type Long = string;
+export interface AggregateUserPromise
+  extends Promise<AggregateUser>,
+    Fragmentable {
+  count: () => Promise<Int>;
+}
+
+export interface AggregateUserSubscription
+  extends Promise<AsyncIterator<AggregateUser>>,
+    Fragmentable {
+  count: () => Promise<AsyncIterator<Int>>;
+}
+
+export interface BatchPayload {
+  count: Long;
+}
+
+export interface BatchPayloadPromise
+  extends Promise<BatchPayload>,
+    Fragmentable {
+  count: () => Promise<Long>;
+}
+
+export interface BatchPayloadSubscription
+  extends Promise<AsyncIterator<BatchPayload>>,
+    Fragmentable {
+  count: () => Promise<AsyncIterator<Long>>;
+}
+
+export interface LobbySubscriptionPayload {
+  mutation: MutationType;
+  updatedFields?: String[];
+}
+
+export interface LobbySubscriptionPayloadPromise
+  extends Promise<LobbySubscriptionPayload>,
+    Fragmentable {
+  mutation: () => Promise<MutationType>;
+  node: <T = LobbyPromise>() => T;
+  updatedFields: () => Promise<String[]>;
+  previousValues: <T = LobbyPreviousValuesPromise>() => T;
+}
+
+export interface LobbySubscriptionPayloadSubscription
+  extends Promise<AsyncIterator<LobbySubscriptionPayload>>,
+    Fragmentable {
+  mutation: () => Promise<AsyncIterator<MutationType>>;
+  node: <T = LobbySubscription>() => T;
+  updatedFields: () => Promise<AsyncIterator<String[]>>;
+  previousValues: <T = LobbyPreviousValuesSubscription>() => T;
+}
+
+export interface LobbyPreviousValues {
+  id: ID_Output;
+  createdAt: DateTimeOutput;
+  updatedAt: DateTimeOutput;
+  started: Boolean;
+  creator_word?: String;
+  partner_word?: String;
+}
+
+export interface LobbyPreviousValuesPromise
+  extends Promise<LobbyPreviousValues>,
+    Fragmentable {
+  id: () => Promise<ID_Output>;
+  createdAt: () => Promise<DateTimeOutput>;
+  updatedAt: () => Promise<DateTimeOutput>;
+  started: () => Promise<Boolean>;
+  creator_word: () => Promise<String>;
+  partner_word: () => Promise<String>;
+}
+
+export interface LobbyPreviousValuesSubscription
+  extends Promise<AsyncIterator<LobbyPreviousValues>>,
+    Fragmentable {
+  id: () => Promise<AsyncIterator<ID_Output>>;
+  createdAt: () => Promise<AsyncIterator<DateTimeOutput>>;
+  updatedAt: () => Promise<AsyncIterator<DateTimeOutput>>;
+  started: () => Promise<AsyncIterator<Boolean>>;
+  creator_word: () => Promise<AsyncIterator<String>>;
+  partner_word: () => Promise<AsyncIterator<String>>;
+}
+
+export interface RoundSubscriptionPayload {
+  mutation: MutationType;
+  updatedFields?: String[];
+}
+
+export interface RoundSubscriptionPayloadPromise
+  extends Promise<RoundSubscriptionPayload>,
+    Fragmentable {
+  mutation: () => Promise<MutationType>;
+  node: <T = RoundPromise>() => T;
+  updatedFields: () => Promise<String[]>;
+  previousValues: <T = RoundPreviousValuesPromise>() => T;
+}
+
+export interface RoundSubscriptionPayloadSubscription
+  extends Promise<AsyncIterator<RoundSubscriptionPayload>>,
+    Fragmentable {
+  mutation: () => Promise<AsyncIterator<MutationType>>;
+  node: <T = RoundSubscription>() => T;
+  updatedFields: () => Promise<AsyncIterator<String[]>>;
+  previousValues: <T = RoundPreviousValuesSubscription>() => T;
+}
+
+export interface RoundPreviousValues {
+  id: ID_Output;
+  word1: String;
+  word2: String;
+}
+
+export interface RoundPreviousValuesPromise
+  extends Promise<RoundPreviousValues>,
+    Fragmentable {
+  id: () => Promise<ID_Output>;
+  word1: () => Promise<String>;
+  word2: () => Promise<String>;
+}
+
+export interface RoundPreviousValuesSubscription
+  extends Promise<AsyncIterator<RoundPreviousValues>>,
+    Fragmentable {
+  id: () => Promise<AsyncIterator<ID_Output>>;
+  word1: () => Promise<AsyncIterator<String>>;
+  word2: () => Promise<AsyncIterator<String>>;
+}
+
+export interface UserSubscriptionPayload {
+  mutation: MutationType;
+  updatedFields?: String[];
+}
+
+export interface UserSubscriptionPayloadPromise
+  extends Promise<UserSubscriptionPayload>,
+    Fragmentable {
+  mutation: () => Promise<MutationType>;
+  node: <T = UserPromise>() => T;
+  updatedFields: () => Promise<String[]>;
+  previousValues: <T = UserPreviousValuesPromise>() => T;
+}
+
+export interface UserSubscriptionPayloadSubscription
+  extends Promise<AsyncIterator<UserSubscriptionPayload>>,
+    Fragmentable {
+  mutation: () => Promise<AsyncIterator<MutationType>>;
+  node: <T = UserSubscription>() => T;
+  updatedFields: () => Promise<AsyncIterator<String[]>>;
+  previousValues: <T = UserPreviousValuesSubscription>() => T;
+}
+
+export interface UserPreviousValues {
+  id: ID_Output;
+  nick: String;
+}
+
+export interface UserPreviousValuesPromise
+  extends Promise<UserPreviousValues>,
+    Fragmentable {
+  id: () => Promise<ID_Output>;
+  nick: () => Promise<String>;
+}
+
+export interface UserPreviousValuesSubscription
+  extends Promise<AsyncIterator<UserPreviousValues>>,
+    Fragmentable {
+  id: () => Promise<AsyncIterator<ID_Output>>;
+  nick: () => Promise<AsyncIterator<String>>;
+}
 
 /*
 The `ID` scalar type represents a unique identifier, often used to refetch an object or as key for a cache. The ID type appears in a JSON response as a String; however, it is not intended to be human-readable. When expected as an input type, any string (such as `"4"`) or integer (such as `4`) input value will be accepted as an ID.
 */
 export type ID_Input = string | number;
 export type ID_Output = string;
-
-/*
-The `Boolean` scalar type represents `true` or `false`.
-*/
-export type Boolean = boolean;
 
 /*
 DateTime scalar input type, allowing Date
@@ -876,9 +1025,21 @@ DateTime scalar output type, which is always a string
 export type DateTimeOutput = string;
 
 /*
-The `Int` scalar type represents non-fractional signed whole numeric values. Int can represent values between -(2^31) and 2^31 - 1. 
+The `Boolean` scalar type represents `true` or `false`.
+*/
+export type Boolean = boolean;
+
+/*
+The `String` scalar type represents textual data, represented as UTF-8 character sequences. The String type is most often used by GraphQL to represent free-form human-readable text.
+*/
+export type String = string;
+
+/*
+The `Int` scalar type represents non-fractional signed whole numeric values. Int can represent values between -(2^31) and 2^31 - 1.
 */
 export type Int = number;
+
+export type Long = string;
 
 /**
  * Model Metadata
@@ -886,7 +1047,11 @@ export type Int = number;
 
 export const models = [
   {
-    name: "Post",
+    name: "Lobby",
+    embedded: false
+  },
+  {
+    name: "Round",
     embedded: false
   },
   {
