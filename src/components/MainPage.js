@@ -24,6 +24,11 @@ const styles = theme => ({
   icon: {
     marginRight: theme.spacing(2),
   },
+  toolbarButtons: {
+    marginLeft: "auto",
+    marginRight: 0,
+    overflow: "hidden"
+  },
   heroContent: {
     backgroundColor: theme.palette.background.paper,
     padding: theme.spacing(8, 0, 6),
@@ -55,6 +60,13 @@ const styles = theme => ({
 
 class MainPage extends Component {
     state = {
+      nick: ''
+    }
+
+    componentWillReceiveProps(nextProps) {
+      if (this.props.location.key !== nextProps.location.key) {
+        this.props.meQuery.refetch()
+      }
     }
 
 
@@ -78,6 +90,14 @@ class MainPage extends Component {
     render() {
         const { classes } = this.props;
 
+        if (this.props.meQuery.loading) {
+          //console.log(this.props.meQuery)
+          return null
+        } else {
+          //console.log(this.props.meQuery)
+          //this.setState({nick: this.props.meQuery.me.nick});
+        }
+
         return (
             <React.Fragment>
               <CssBaseline />
@@ -85,8 +105,13 @@ class MainPage extends Component {
                 <Toolbar>
                   <CameraIcon className={classes.icon} />
                   <Typography variant="h6" color="inherit" noWrap>
-                    Album layout
+                    
                   </Typography>
+                  <span className={classes.toolbarButtons}>
+                  <Typography variant="h6" color="inherit" align="right" noWrap>
+                    {this.props.meQuery.me.nick} 
+                  </Typography>
+                  </span>
                 </Toolbar>
               </AppBar>
               <main>
@@ -94,31 +119,36 @@ class MainPage extends Component {
                 <div className={classes.heroContent}>
                   <Container maxWidth="sm">
                     <Typography component="h1" variant="h2" align="center" color="textPrimary" gutterBottom>
-                      Album layout
+                      What is this?
                     </Typography>
                     <Typography variant="h5" align="center" color="textSecondary" paragraph>
-                      Something short and leading about the collection below—its contents, the creator, etc.
-                      Make it short and sweet, but not too short so folks don&apos;t simply skip over it
-                      entirely.
+                      It's simple, right? 
+                      <br/> <br/> 
+                      All you gotta do is <b>guess what your opponent is gonna say next!</b>
+                      <br/><br/>
+                      If you both say the same thing, you both win!
                     </Typography>
                     <div className={classes.heroButtons}>
                       <Grid container spacing={2} justify="center">
                         <Grid item>
-                          <Button variant="contained" color="primary">
-                            Main call to action
+                          <Button variant="contained" color="primary" href="lobbies">
+                            Let's do this!
                           </Button>
                         </Grid>
+                        {/*
                         <Grid item>
                           <Button variant="outlined" color="primary">
                             Secondary action
                           </Button>
                         </Grid>
+                        */}
                       </Grid>
                     </div>
                   </Container>
                 </div>
                 <Container className={classes.cardGrid} maxWidth="md">
                   {/* End hero unit */}
+                  {/*
                   <Grid container spacing={4}>
                     {this.cards.map(card => (
                       <Grid item key={card} xs={12} sm={6} md={4}>
@@ -148,6 +178,7 @@ class MainPage extends Component {
                       </Grid>
                     ))}
                   </Grid>
+                    */}
                 </Container>
               </main>
               {/* Footer */}
@@ -156,7 +187,7 @@ class MainPage extends Component {
                   Footer
                 </Typography>
                 <Typography variant="subtitle1" align="center" color="textSecondary" component="p">
-                  Something here to give the footer a purpose!
+                  What are you waiting for?
                 </Typography>
                 <this.Copyright />
               </footer>
@@ -169,17 +200,15 @@ class MainPage extends Component {
 const ME_QUERY = gql`
   query MeQuery {
     me {
-      user {
         id
         nick
-      }
     }
   }
 `
 
 export default compose(
     withStyles(styles),
-    graphql(ME_QUERY, { name: 'MeQuery' }),
+    graphql(ME_QUERY, { name: 'meQuery' }),
   )(
   withRouter(MainPage),
 )
