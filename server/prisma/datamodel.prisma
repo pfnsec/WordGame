@@ -14,8 +14,8 @@ type Lobby {
   createdAt: DateTime! @createdAt
   updatedAt: DateTime! @updatedAt
   started: Boolean!
-  creator: User! @relation(name: "Creator")
-  partner: User  @relation(name: "Partner")
+  creator: ID! 
+  partner: ID  
   creator_word: String
   partner_word: String
   rounds: [Round!]

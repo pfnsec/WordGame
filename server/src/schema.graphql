@@ -38,8 +38,8 @@ type Subscription {
 type Lobby {
   id: ID!
   started: Boolean!
-  creator: User!
-  partner: User
+  creator: ID!
+  partner: ID
   creator_word: String
   partner_word: String
   rounds: [Round!]

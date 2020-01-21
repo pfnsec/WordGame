@@ -22,8 +22,8 @@ type Lobby {
   createdAt: DateTime!
   updatedAt: DateTime!
   started: Boolean!
-  creator: User!
-  partner: User
+  creator: ID!
+  partner: ID
   creator_word: String
   partner_word: String
   rounds(where: RoundWhereInput, orderBy: RoundOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Round!]
@@ -37,8 +37,8 @@ type LobbyConnection {
 
 input LobbyCreateInput {
   started: Boolean!
-  creator: UserCreateOneInput!
-  partner: UserCreateOneInput
+  creator: ID!
+  partner: ID
   creator_word: String
   partner_word: String
   rounds: RoundCreateManyInput
@@ -58,6 +58,10 @@ enum LobbyOrderByInput {
   updatedAt_DESC
   started_ASC
   started_DESC
+  creator_ASC
+  creator_DESC
+  partner_ASC
+  partner_DESC
   creator_word_ASC
   creator_word_DESC
   partner_word_ASC
@@ -69,6 +73,8 @@ type LobbyPreviousValues {
   createdAt: DateTime!
   updatedAt: DateTime!
   started: Boolean!
+  creator: ID!
+  partner: ID
   creator_word: String
   partner_word: String
 }
@@ -93,8 +99,8 @@ input LobbySubscriptionWhereInput {
 
 input LobbyUpdateInput {
   started: Boolean
-  creator: UserUpdateOneRequiredInput
-  partner: UserUpdateOneInput
+  creator: ID
+  partner: ID
   creator_word: String
   partner_word: String
   rounds: RoundUpdateManyInput
@@ -102,6 +108,8 @@ input LobbyUpdateInput {
 
 input LobbyUpdateManyMutationInput {
   started: Boolean
+  creator: ID
+  partner: ID
   creator_word: String
   partner_word: String
 }
@@ -139,8 +147,34 @@ input LobbyWhereInput {
   updatedAt_gte: DateTime
   started: Boolean
   started_not: Boolean
-  creator: UserWhereInput
-  partner: UserWhereInput
+  creator: ID
+  creator_not: ID
+  creator_in: [ID!]
+  creator_not_in: [ID!]
+  creator_lt: ID
+  creator_lte: ID
+  creator_gt: ID
+  creator_gte: ID
+  creator_contains: ID
+  creator_not_contains: ID
+  creator_starts_with: ID
+  creator_not_starts_with: ID
+  creator_ends_with: ID
+  creator_not_ends_with: ID
+  partner: ID
+  partner_not: ID
+  partner_in: [ID!]
+  partner_not_in: [ID!]
+  partner_lt: ID
+  partner_lte: ID
+  partner_gt: ID
+  partner_gte: ID
+  partner_contains: ID
+  partner_not_contains: ID
+  partner_starts_with: ID
+  partner_not_starts_with: ID
+  partner_ends_with: ID
+  partner_not_ends_with: ID
   creator_word: String
   creator_word_not: String
   creator_word_in: [String!]
@@ -466,11 +500,6 @@ input UserCreateInput {
   nick: String!
 }
 
-input UserCreateOneInput {
-  create: UserCreateInput
-  connect: UserWhereUniqueInput
-}
-
 type UserEdge {
   node: User!
   cursor: String!
@@ -510,37 +539,12 @@ input UserSubscriptionWhereInput {
   NOT: [UserSubscriptionWhereInput!]
 }
 
-input UserUpdateDataInput {
-  nick: String
-}
-
 input UserUpdateInput {
   nick: String
 }
 
 input UserUpdateManyMutationInput {
   nick: String
-}
-
-input UserUpdateOneInput {
-  create: UserCreateInput
-  update: UserUpdateDataInput
-  upsert: UserUpsertNestedInput
-  delete: Boolean
-  disconnect: Boolean
-  connect: UserWhereUniqueInput
-}
-
-input UserUpdateOneRequiredInput {
-  create: UserCreateInput
-  update: UserUpdateDataInput
-  upsert: UserUpsertNestedInput
-  connect: UserWhereUniqueInput
-}
-
-input UserUpsertNestedInput {
-  update: UserUpdateDataInput!
-  create: UserCreateInput!
 }
 
 input UserWhereInput {

@@ -194,6 +194,10 @@ export type LobbyOrderByInput =
   | "updatedAt_DESC"
   | "started_ASC"
   | "started_DESC"
+  | "creator_ASC"
+  | "creator_DESC"
+  | "partner_ASC"
+  | "partner_DESC"
   | "creator_word_ASC"
   | "creator_word_DESC"
   | "partner_word_ASC"
@@ -296,8 +300,34 @@ export interface LobbyWhereInput {
   updatedAt_gte?: DateTimeInput;
   started?: Boolean;
   started_not?: Boolean;
-  creator?: UserWhereInput;
-  partner?: UserWhereInput;
+  creator?: ID_Input;
+  creator_not?: ID_Input;
+  creator_in?: ID_Input[] | ID_Input;
+  creator_not_in?: ID_Input[] | ID_Input;
+  creator_lt?: ID_Input;
+  creator_lte?: ID_Input;
+  creator_gt?: ID_Input;
+  creator_gte?: ID_Input;
+  creator_contains?: ID_Input;
+  creator_not_contains?: ID_Input;
+  creator_starts_with?: ID_Input;
+  creator_not_starts_with?: ID_Input;
+  creator_ends_with?: ID_Input;
+  creator_not_ends_with?: ID_Input;
+  partner?: ID_Input;
+  partner_not?: ID_Input;
+  partner_in?: ID_Input[] | ID_Input;
+  partner_not_in?: ID_Input[] | ID_Input;
+  partner_lt?: ID_Input;
+  partner_lte?: ID_Input;
+  partner_gt?: ID_Input;
+  partner_gte?: ID_Input;
+  partner_contains?: ID_Input;
+  partner_not_contains?: ID_Input;
+  partner_starts_with?: ID_Input;
+  partner_not_starts_with?: ID_Input;
+  partner_ends_with?: ID_Input;
+  partner_not_ends_with?: ID_Input;
   creator_word?: String;
   creator_word_not?: String;
   creator_word_in?: String[] | String;
@@ -334,6 +364,14 @@ export interface LobbyWhereInput {
   NOT?: LobbyWhereInput[] | LobbyWhereInput;
 }
 
+export type RoundWhereUniqueInput = AtLeastOne<{
+  id: ID_Input;
+}>;
+
+export type UserWhereUniqueInput = AtLeastOne<{
+  id: ID_Input;
+}>;
+
 export interface UserWhereInput {
   id?: ID_Input;
   id_not?: ID_Input;
@@ -368,30 +406,13 @@ export interface UserWhereInput {
   NOT?: UserWhereInput[] | UserWhereInput;
 }
 
-export type RoundWhereUniqueInput = AtLeastOne<{
-  id: ID_Input;
-}>;
-
-export type UserWhereUniqueInput = AtLeastOne<{
-  id: ID_Input;
-}>;
-
 export interface LobbyCreateInput {
   started: Boolean;
-  creator: UserCreateOneInput;
-  partner?: UserCreateOneInput;
+  creator: ID_Input;
+  partner?: ID_Input;
   creator_word?: String;
   partner_word?: String;
   rounds?: RoundCreateManyInput;
-}
-
-export interface UserCreateOneInput {
-  create?: UserCreateInput;
-  connect?: UserWhereUniqueInput;
-}
-
-export interface UserCreateInput {
-  nick: String;
 }
 
 export interface RoundCreateManyInput {
@@ -406,36 +427,11 @@ export interface RoundCreateInput {
 
 export interface LobbyUpdateInput {
   started?: Boolean;
-  creator?: UserUpdateOneRequiredInput;
-  partner?: UserUpdateOneInput;
+  creator?: ID_Input;
+  partner?: ID_Input;
   creator_word?: String;
   partner_word?: String;
   rounds?: RoundUpdateManyInput;
-}
-
-export interface UserUpdateOneRequiredInput {
-  create?: UserCreateInput;
-  update?: UserUpdateDataInput;
-  upsert?: UserUpsertNestedInput;
-  connect?: UserWhereUniqueInput;
-}
-
-export interface UserUpdateDataInput {
-  nick?: String;
-}
-
-export interface UserUpsertNestedInput {
-  update: UserUpdateDataInput;
-  create: UserCreateInput;
-}
-
-export interface UserUpdateOneInput {
-  create?: UserCreateInput;
-  update?: UserUpdateDataInput;
-  upsert?: UserUpsertNestedInput;
-  delete?: Boolean;
-  disconnect?: Boolean;
-  connect?: UserWhereUniqueInput;
 }
 
 export interface RoundUpdateManyInput {
@@ -531,6 +527,8 @@ export interface RoundUpdateManyDataInput {
 
 export interface LobbyUpdateManyMutationInput {
   started?: Boolean;
+  creator?: ID_Input;
+  partner?: ID_Input;
   creator_word?: String;
   partner_word?: String;
 }
@@ -543,6 +541,10 @@ export interface RoundUpdateInput {
 export interface RoundUpdateManyMutationInput {
   word1?: String;
   word2?: String;
+}
+
+export interface UserCreateInput {
+  nick: String;
 }
 
 export interface UserUpdateInput {
@@ -595,6 +597,8 @@ export interface Lobby {
   createdAt: DateTimeOutput;
   updatedAt: DateTimeOutput;
   started: Boolean;
+  creator: ID_Output;
+  partner?: ID_Output;
   creator_word?: String;
   partner_word?: String;
 }
@@ -604,8 +608,8 @@ export interface LobbyPromise extends Promise<Lobby>, Fragmentable {
   createdAt: () => Promise<DateTimeOutput>;
   updatedAt: () => Promise<DateTimeOutput>;
   started: () => Promise<Boolean>;
-  creator: <T = UserPromise>() => T;
-  partner: <T = UserPromise>() => T;
+  creator: () => Promise<ID_Output>;
+  partner: () => Promise<ID_Output>;
   creator_word: () => Promise<String>;
   partner_word: () => Promise<String>;
   rounds: <T = FragmentableArray<Round>>(args?: {
@@ -626,8 +630,8 @@ export interface LobbySubscription
   createdAt: () => Promise<AsyncIterator<DateTimeOutput>>;
   updatedAt: () => Promise<AsyncIterator<DateTimeOutput>>;
   started: () => Promise<AsyncIterator<Boolean>>;
-  creator: <T = UserSubscription>() => T;
-  partner: <T = UserSubscription>() => T;
+  creator: () => Promise<AsyncIterator<ID_Output>>;
+  partner: () => Promise<AsyncIterator<ID_Output>>;
   creator_word: () => Promise<AsyncIterator<String>>;
   partner_word: () => Promise<AsyncIterator<String>>;
   rounds: <T = Promise<AsyncIterator<RoundSubscription>>>(args?: {
@@ -639,23 +643,6 @@ export interface LobbySubscription
     first?: Int;
     last?: Int;
   }) => T;
-}
-
-export interface User {
-  id: ID_Output;
-  nick: String;
-}
-
-export interface UserPromise extends Promise<User>, Fragmentable {
-  id: () => Promise<ID_Output>;
-  nick: () => Promise<String>;
-}
-
-export interface UserSubscription
-  extends Promise<AsyncIterator<User>>,
-    Fragmentable {
-  id: () => Promise<AsyncIterator<ID_Output>>;
-  nick: () => Promise<AsyncIterator<String>>;
 }
 
 export interface Round {
@@ -801,6 +788,23 @@ export interface AggregateRoundSubscription
   count: () => Promise<AsyncIterator<Int>>;
 }
 
+export interface User {
+  id: ID_Output;
+  nick: String;
+}
+
+export interface UserPromise extends Promise<User>, Fragmentable {
+  id: () => Promise<ID_Output>;
+  nick: () => Promise<String>;
+}
+
+export interface UserSubscription
+  extends Promise<AsyncIterator<User>>,
+    Fragmentable {
+  id: () => Promise<AsyncIterator<ID_Output>>;
+  nick: () => Promise<AsyncIterator<String>>;
+}
+
 export interface UserConnection {}
 
 export interface UserConnectionPromise
@@ -895,6 +899,8 @@ export interface LobbyPreviousValues {
   createdAt: DateTimeOutput;
   updatedAt: DateTimeOutput;
   started: Boolean;
+  creator: ID_Output;
+  partner?: ID_Output;
   creator_word?: String;
   partner_word?: String;
 }
@@ -906,6 +912,8 @@ export interface LobbyPreviousValuesPromise
   createdAt: () => Promise<DateTimeOutput>;
   updatedAt: () => Promise<DateTimeOutput>;
   started: () => Promise<Boolean>;
+  creator: () => Promise<ID_Output>;
+  partner: () => Promise<ID_Output>;
   creator_word: () => Promise<String>;
   partner_word: () => Promise<String>;
 }
@@ -917,6 +925,8 @@ export interface LobbyPreviousValuesSubscription
   createdAt: () => Promise<AsyncIterator<DateTimeOutput>>;
   updatedAt: () => Promise<AsyncIterator<DateTimeOutput>>;
   started: () => Promise<AsyncIterator<Boolean>>;
+  creator: () => Promise<AsyncIterator<ID_Output>>;
+  partner: () => Promise<AsyncIterator<ID_Output>>;
   creator_word: () => Promise<AsyncIterator<String>>;
   partner_word: () => Promise<AsyncIterator<String>>;
 }
