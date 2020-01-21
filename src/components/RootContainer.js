@@ -15,6 +15,7 @@ import LobbiesPage from './LobbiesPage'
 import MainPage from './MainPage'
 import PageNotFound from './PageNotFound'
 import NickPage from './NickPage'
+import Footer from './Footer'
 import { AUTH_TOKEN } from '../constant'
 import { isTokenExpired } from '../helper/jwtHelper'
 import { graphql } from 'react-apollo'
@@ -108,6 +109,7 @@ class RootContainer extends Component {
                 />
                 <Route component={PageNotFound} />
                 </Switch>
+                <Footer/>
             </Container>
         </div>
         )
