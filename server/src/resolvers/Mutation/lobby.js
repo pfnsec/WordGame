@@ -3,10 +3,14 @@ const { getUserId } = require('../../utils')
 const lobby = {
   async createLobby(parent, {}, context) {
     const userId = getUserId(context)
+    console.log("createLobby")
     return context.prisma.createLobby({
-      title,
-      content,
-      author: { connect: { id: userId } },
+      started: false,
+      creator: userId, 
+      partner: null,
+      creator_word: "",
+      partner_word: "",
+      rounds: {},
     })
   },
 
