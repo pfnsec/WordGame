@@ -12,6 +12,7 @@ import Grid from '@material-ui/core/Grid';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 
+import NickToolbar from './NickToolbar'
 import Styles from './Styles'
 import { withStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
@@ -55,26 +56,13 @@ class MainPage extends Component {
 
         return (
             <React.Fragment>
-              <CssBaseline />
-              <AppBar position="relative">
-                <Toolbar>
-                  <CameraIcon className={classes.icon} />
-                  <Typography variant="h6" color="inherit" noWrap>
-                    
-                  </Typography>
-                  <span className={classes.toolbarButtons}>
-                  <Typography variant="h6" color="inherit" align="right" noWrap>
-                    {this.props.meQuery.me.nick} 
-                  </Typography>
-                  </span>
-                </Toolbar>
-              </AppBar>
+              <NickToolbar/>
               <main>
                 {/* Hero unit */}
                 <div className={classes.heroContent}>
                   <Container maxWidth="sm">
                     <Typography component="h1" variant="h2" align="center" color="textPrimary" gutterBottom>
-                      What is this?
+                      这是什么？？
                     </Typography>
                     <Typography variant="h5" align="center" color="textSecondary" paragraph>
                       It's simple, right? 
@@ -104,7 +92,6 @@ class MainPage extends Component {
                 <Container className={classes.cardGrid} maxWidth="md">
                 </Container>
               </main>
-              <Footer/>
             </React.Fragment>
           )
     }
