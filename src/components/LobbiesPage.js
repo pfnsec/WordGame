@@ -60,25 +60,41 @@ class LobbiesPage extends Component {
       });
     }
 
-    handleToggle() {
+    handleToggle(lobby) {
+
+      console.log(lobby)
 
     }
 
     componentWillReceiveProps(nextProps) {
       if (this.props.location.key !== nextProps.location.key) {
         this.props.meQuery.refetch()
+        this.props.lobbiesQuery.refetch()
       }
     }
 
     render() {
+
+        //this.props.lobbiesQuery.startPolling(500)
+
         const { classes } = this.props;
 
+        var me = null
         if (this.props.meQuery.loading) {
           //console.log(this.props.meQuery)
-          return null
+          //return null
         } else {
+          me = this.props.meQuery.me
           //console.log(this.props.meQuery)
           //this.setState({nick: this.props.meQuery.me.nick});
+        }
+
+        var lobbies = [];
+        if (this.props.lobbiesQuery.loading) {
+        } else if (this.props.lobbiesQuery.error) {
+        } else {
+          console.log(this.props.lobbiesQuery)
+          lobbies = this.props.lobbiesQuery.lobbies
         }
 
 
@@ -93,11 +109,11 @@ class LobbiesPage extends Component {
                       Join a lobby!
                     </Typography>
                     <List className={classes.root}>
-                        {[0, 1, 2, 3, 4, 5, 6].map(value => {
-                          const labelId = `checkbox-list-label-${value}`;
+                        {lobbies.map(lobby => {
+                          const labelId = `checkbox-list-label-${lobby}`;
 
                           return (
-                            <ListItem key={value} role={undefined} dense button onClick={this.handleToggle(value)}>
+                            <ListItem key={lobby.id} role={undefined} dense button onClick={this.handleToggle(lobby)}>
                               <ListItemIcon>
                                 <Checkbox
                                   edge="start"
@@ -106,7 +122,7 @@ class LobbiesPage extends Component {
                                   inputProps={{ 'aria-labelledby': labelId }}
                                 />
                               </ListItemIcon>
-                              <ListItemText id={labelId} primary={`Line item ${value + 1}`} />
+                              <ListItemText id={labelId} primary={`Line item ${lobby + 1}`} />
                               <ListItemSecondaryAction>
                                 <IconButton edge="end" aria-label="comments">
                                   <CommentIcon />
@@ -188,7 +204,8 @@ const ME_QUERY = gql`
 export default compose(
     graphql(SUBMIT_TURN, { name: 'submitTurn' }),
     graphql(CREATE_LOBBY_MUTATION, { name: 'createLobby' }),
-    graphql(LOBBIES_QUERY, { name: 'lobbiesQuery' }),
+    graphql(LOBBIES_QUERY, { name: 'lobbiesQuery', pollInterval: 500,
+  }),
     graphql(ME_QUERY, { name: 'meQuery' }),
     withStyles(Styles),
   )(
