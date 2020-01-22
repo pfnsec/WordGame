@@ -2,11 +2,17 @@ const { getUserId } = require('../../utils')
 
 const lobby = {
   async createLobby(parent, {}, context) {
+
     const userId = getUserId(context)
+
     console.log("createLobby")
+    console.log(context.prisma.user({id: userId}))
+
+    var user = context.prisma.user({id: userId})
+
     return context.prisma.createLobby({
-      started: false,
-      creator: userId, 
+      state:   "WAITING",
+      creator: user, 
       partner: null,
       creator_word: "",
       partner_word: "",
@@ -14,14 +20,32 @@ const lobby = {
     })
   },
 
+  async joinLobby(parent, {l_id}, context) {
+
+    const userId = getUserId(context)
+
+    console.log("createLobby")
+    console.log(context.prisma.user({id: userId}))
+
+    var user = context.prisma.user({id: userId})
+    var lobby = context.prisma.lobby({id:  l_id})
+
+    if(lobby.creator != null && lobby.partner != null) { 
+      throw new Error(`This lobby is full!`)
+    }
+
+    if(user.inLobby != null) { 
+      throw new Error(`You're already in a lobby!`)
+    }
+  },
+
   async submitTurn(parent, { word, l_id }, context) {
     const userId = getUserId(context)
 
     lobby = context.prisma.lobby(
       {
-        where: { l_id },
+        id: { l_id },
       }
-
     )
 
     if(userId == lobby.creator && lobby.creator_word == "") {
