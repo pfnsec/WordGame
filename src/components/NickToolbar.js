@@ -25,13 +25,18 @@ class NickToolbar extends Component {
     render() {
     
         const { classes } = this.props;
+        var nickname = ''
 
         if (this.props.meQuery.loading) {
           console.log(this.props.meQuery)
-          return null
+          //return null
         } else {
           console.log(this.props.meQuery)
-          //this.setState({nick: this.props.meQuery.me.nick});
+
+
+          if('me' in this.props.meQuery && this.props.meQuery.me != null) {
+            nickname = this.props.meQuery.me.nick
+          }
         }
 
         return (
@@ -45,7 +50,7 @@ class NickToolbar extends Component {
                         </Typography>
                         <span className={classes.toolbarButtons}>
                         <Typography variant="h6" color="inherit" align="right" noWrap>
-                        {this.props.meQuery.me.nick} 
+                        {nickname} 
                         </Typography>
                         </span>
                     </Toolbar>
