@@ -173,6 +173,8 @@ export interface ClientConstructor<T> {
  * Types
  */
 
+export type GameState = "WAITING" | "STARTED" | "FINISHED";
+
 export type RoundOrderByInput =
   | "id_ASC"
   | "id_DESC"
@@ -192,12 +194,8 @@ export type LobbyOrderByInput =
   | "createdAt_DESC"
   | "updatedAt_ASC"
   | "updatedAt_DESC"
-  | "started_ASC"
-  | "started_DESC"
-  | "creator_ASC"
-  | "creator_DESC"
-  | "partner_ASC"
-  | "partner_DESC"
+  | "state_ASC"
+  | "state_DESC"
   | "creator_word_ASC"
   | "creator_word_DESC"
   | "partner_word_ASC"
@@ -208,6 +206,8 @@ export type UserOrderByInput =
   | "id_DESC"
   | "nick_ASC"
   | "nick_DESC"
+  | "inLobby_ASC"
+  | "inLobby_DESC"
   | "createdAt_ASC"
   | "createdAt_DESC"
   | "updatedAt_ASC"
@@ -298,36 +298,12 @@ export interface LobbyWhereInput {
   updatedAt_lte?: DateTimeInput;
   updatedAt_gt?: DateTimeInput;
   updatedAt_gte?: DateTimeInput;
-  started?: Boolean;
-  started_not?: Boolean;
-  creator?: ID_Input;
-  creator_not?: ID_Input;
-  creator_in?: ID_Input[] | ID_Input;
-  creator_not_in?: ID_Input[] | ID_Input;
-  creator_lt?: ID_Input;
-  creator_lte?: ID_Input;
-  creator_gt?: ID_Input;
-  creator_gte?: ID_Input;
-  creator_contains?: ID_Input;
-  creator_not_contains?: ID_Input;
-  creator_starts_with?: ID_Input;
-  creator_not_starts_with?: ID_Input;
-  creator_ends_with?: ID_Input;
-  creator_not_ends_with?: ID_Input;
-  partner?: ID_Input;
-  partner_not?: ID_Input;
-  partner_in?: ID_Input[] | ID_Input;
-  partner_not_in?: ID_Input[] | ID_Input;
-  partner_lt?: ID_Input;
-  partner_lte?: ID_Input;
-  partner_gt?: ID_Input;
-  partner_gte?: ID_Input;
-  partner_contains?: ID_Input;
-  partner_not_contains?: ID_Input;
-  partner_starts_with?: ID_Input;
-  partner_not_starts_with?: ID_Input;
-  partner_ends_with?: ID_Input;
-  partner_not_ends_with?: ID_Input;
+  state?: GameState;
+  state_not?: GameState;
+  state_in?: GameState[] | GameState;
+  state_not_in?: GameState[] | GameState;
+  creator?: UserWhereInput;
+  partner?: UserWhereInput;
   creator_word?: String;
   creator_word_not?: String;
   creator_word_in?: String[] | String;
@@ -364,14 +340,6 @@ export interface LobbyWhereInput {
   NOT?: LobbyWhereInput[] | LobbyWhereInput;
 }
 
-export type RoundWhereUniqueInput = AtLeastOne<{
-  id: ID_Input;
-}>;
-
-export type UserWhereUniqueInput = AtLeastOne<{
-  id: ID_Input;
-}>;
-
 export interface UserWhereInput {
   id?: ID_Input;
   id_not?: ID_Input;
@@ -401,18 +369,50 @@ export interface UserWhereInput {
   nick_not_starts_with?: String;
   nick_ends_with?: String;
   nick_not_ends_with?: String;
+  inLobby?: ID_Input;
+  inLobby_not?: ID_Input;
+  inLobby_in?: ID_Input[] | ID_Input;
+  inLobby_not_in?: ID_Input[] | ID_Input;
+  inLobby_lt?: ID_Input;
+  inLobby_lte?: ID_Input;
+  inLobby_gt?: ID_Input;
+  inLobby_gte?: ID_Input;
+  inLobby_contains?: ID_Input;
+  inLobby_not_contains?: ID_Input;
+  inLobby_starts_with?: ID_Input;
+  inLobby_not_starts_with?: ID_Input;
+  inLobby_ends_with?: ID_Input;
+  inLobby_not_ends_with?: ID_Input;
   AND?: UserWhereInput[] | UserWhereInput;
   OR?: UserWhereInput[] | UserWhereInput;
   NOT?: UserWhereInput[] | UserWhereInput;
 }
 
+export type RoundWhereUniqueInput = AtLeastOne<{
+  id: ID_Input;
+}>;
+
+export type UserWhereUniqueInput = AtLeastOne<{
+  id: ID_Input;
+}>;
+
 export interface LobbyCreateInput {
-  started: Boolean;
-  creator: ID_Input;
-  partner?: ID_Input;
+  state: GameState;
+  creator: UserCreateOneInput;
+  partner?: UserCreateOneInput;
   creator_word?: String;
   partner_word?: String;
   rounds?: RoundCreateManyInput;
+}
+
+export interface UserCreateOneInput {
+  create?: UserCreateInput;
+  connect?: UserWhereUniqueInput;
+}
+
+export interface UserCreateInput {
+  nick: String;
+  inLobby?: ID_Input;
 }
 
 export interface RoundCreateManyInput {
@@ -426,12 +426,38 @@ export interface RoundCreateInput {
 }
 
 export interface LobbyUpdateInput {
-  started?: Boolean;
-  creator?: ID_Input;
-  partner?: ID_Input;
+  state?: GameState;
+  creator?: UserUpdateOneRequiredInput;
+  partner?: UserUpdateOneInput;
   creator_word?: String;
   partner_word?: String;
   rounds?: RoundUpdateManyInput;
+}
+
+export interface UserUpdateOneRequiredInput {
+  create?: UserCreateInput;
+  update?: UserUpdateDataInput;
+  upsert?: UserUpsertNestedInput;
+  connect?: UserWhereUniqueInput;
+}
+
+export interface UserUpdateDataInput {
+  nick?: String;
+  inLobby?: ID_Input;
+}
+
+export interface UserUpsertNestedInput {
+  update: UserUpdateDataInput;
+  create: UserCreateInput;
+}
+
+export interface UserUpdateOneInput {
+  create?: UserCreateInput;
+  update?: UserUpdateDataInput;
+  upsert?: UserUpsertNestedInput;
+  delete?: Boolean;
+  disconnect?: Boolean;
+  connect?: UserWhereUniqueInput;
 }
 
 export interface RoundUpdateManyInput {
@@ -526,9 +552,7 @@ export interface RoundUpdateManyDataInput {
 }
 
 export interface LobbyUpdateManyMutationInput {
-  started?: Boolean;
-  creator?: ID_Input;
-  partner?: ID_Input;
+  state?: GameState;
   creator_word?: String;
   partner_word?: String;
 }
@@ -543,16 +567,14 @@ export interface RoundUpdateManyMutationInput {
   word2?: String;
 }
 
-export interface UserCreateInput {
-  nick: String;
-}
-
 export interface UserUpdateInput {
   nick?: String;
+  inLobby?: ID_Input;
 }
 
 export interface UserUpdateManyMutationInput {
   nick?: String;
+  inLobby?: ID_Input;
 }
 
 export interface LobbySubscriptionWhereInput {
@@ -596,9 +618,7 @@ export interface Lobby {
   id: ID_Output;
   createdAt: DateTimeOutput;
   updatedAt: DateTimeOutput;
-  started: Boolean;
-  creator: ID_Output;
-  partner?: ID_Output;
+  state: GameState;
   creator_word?: String;
   partner_word?: String;
 }
@@ -607,9 +627,9 @@ export interface LobbyPromise extends Promise<Lobby>, Fragmentable {
   id: () => Promise<ID_Output>;
   createdAt: () => Promise<DateTimeOutput>;
   updatedAt: () => Promise<DateTimeOutput>;
-  started: () => Promise<Boolean>;
-  creator: () => Promise<ID_Output>;
-  partner: () => Promise<ID_Output>;
+  state: () => Promise<GameState>;
+  creator: <T = UserPromise>() => T;
+  partner: <T = UserPromise>() => T;
   creator_word: () => Promise<String>;
   partner_word: () => Promise<String>;
   rounds: <T = FragmentableArray<Round>>(args?: {
@@ -629,9 +649,9 @@ export interface LobbySubscription
   id: () => Promise<AsyncIterator<ID_Output>>;
   createdAt: () => Promise<AsyncIterator<DateTimeOutput>>;
   updatedAt: () => Promise<AsyncIterator<DateTimeOutput>>;
-  started: () => Promise<AsyncIterator<Boolean>>;
-  creator: () => Promise<AsyncIterator<ID_Output>>;
-  partner: () => Promise<AsyncIterator<ID_Output>>;
+  state: () => Promise<AsyncIterator<GameState>>;
+  creator: <T = UserSubscription>() => T;
+  partner: <T = UserSubscription>() => T;
   creator_word: () => Promise<AsyncIterator<String>>;
   partner_word: () => Promise<AsyncIterator<String>>;
   rounds: <T = Promise<AsyncIterator<RoundSubscription>>>(args?: {
@@ -643,6 +663,26 @@ export interface LobbySubscription
     first?: Int;
     last?: Int;
   }) => T;
+}
+
+export interface User {
+  id: ID_Output;
+  nick: String;
+  inLobby?: ID_Output;
+}
+
+export interface UserPromise extends Promise<User>, Fragmentable {
+  id: () => Promise<ID_Output>;
+  nick: () => Promise<String>;
+  inLobby: () => Promise<ID_Output>;
+}
+
+export interface UserSubscription
+  extends Promise<AsyncIterator<User>>,
+    Fragmentable {
+  id: () => Promise<AsyncIterator<ID_Output>>;
+  nick: () => Promise<AsyncIterator<String>>;
+  inLobby: () => Promise<AsyncIterator<ID_Output>>;
 }
 
 export interface Round {
@@ -788,23 +828,6 @@ export interface AggregateRoundSubscription
   count: () => Promise<AsyncIterator<Int>>;
 }
 
-export interface User {
-  id: ID_Output;
-  nick: String;
-}
-
-export interface UserPromise extends Promise<User>, Fragmentable {
-  id: () => Promise<ID_Output>;
-  nick: () => Promise<String>;
-}
-
-export interface UserSubscription
-  extends Promise<AsyncIterator<User>>,
-    Fragmentable {
-  id: () => Promise<AsyncIterator<ID_Output>>;
-  nick: () => Promise<AsyncIterator<String>>;
-}
-
 export interface UserConnection {}
 
 export interface UserConnectionPromise
@@ -898,9 +921,7 @@ export interface LobbyPreviousValues {
   id: ID_Output;
   createdAt: DateTimeOutput;
   updatedAt: DateTimeOutput;
-  started: Boolean;
-  creator: ID_Output;
-  partner?: ID_Output;
+  state: GameState;
   creator_word?: String;
   partner_word?: String;
 }
@@ -911,9 +932,7 @@ export interface LobbyPreviousValuesPromise
   id: () => Promise<ID_Output>;
   createdAt: () => Promise<DateTimeOutput>;
   updatedAt: () => Promise<DateTimeOutput>;
-  started: () => Promise<Boolean>;
-  creator: () => Promise<ID_Output>;
-  partner: () => Promise<ID_Output>;
+  state: () => Promise<GameState>;
   creator_word: () => Promise<String>;
   partner_word: () => Promise<String>;
 }
@@ -924,9 +943,7 @@ export interface LobbyPreviousValuesSubscription
   id: () => Promise<AsyncIterator<ID_Output>>;
   createdAt: () => Promise<AsyncIterator<DateTimeOutput>>;
   updatedAt: () => Promise<AsyncIterator<DateTimeOutput>>;
-  started: () => Promise<AsyncIterator<Boolean>>;
-  creator: () => Promise<AsyncIterator<ID_Output>>;
-  partner: () => Promise<AsyncIterator<ID_Output>>;
+  state: () => Promise<AsyncIterator<GameState>>;
   creator_word: () => Promise<AsyncIterator<String>>;
   partner_word: () => Promise<AsyncIterator<String>>;
 }
@@ -1002,6 +1019,7 @@ export interface UserSubscriptionPayloadSubscription
 export interface UserPreviousValues {
   id: ID_Output;
   nick: String;
+  inLobby?: ID_Output;
 }
 
 export interface UserPreviousValuesPromise
@@ -1009,6 +1027,7 @@ export interface UserPreviousValuesPromise
     Fragmentable {
   id: () => Promise<ID_Output>;
   nick: () => Promise<String>;
+  inLobby: () => Promise<ID_Output>;
 }
 
 export interface UserPreviousValuesSubscription
@@ -1016,6 +1035,7 @@ export interface UserPreviousValuesSubscription
     Fragmentable {
   id: () => Promise<AsyncIterator<ID_Output>>;
   nick: () => Promise<AsyncIterator<String>>;
+  inLobby: () => Promise<AsyncIterator<ID_Output>>;
 }
 
 /*
@@ -1035,11 +1055,6 @@ DateTime scalar output type, which is always a string
 export type DateTimeOutput = string;
 
 /*
-The `Boolean` scalar type represents `true` or `false`.
-*/
-export type Boolean = boolean;
-
-/*
 The `String` scalar type represents textual data, represented as UTF-8 character sequences. The String type is most often used by GraphQL to represent free-form human-readable text.
 */
 export type String = string;
@@ -1049,6 +1064,11 @@ The `Int` scalar type represents non-fractional signed whole numeric values. Int
 */
 export type Int = number;
 
+/*
+The `Boolean` scalar type represents `true` or `false`.
+*/
+export type Boolean = boolean;
+
 export type Long = string;
 
 /**
@@ -1056,6 +1076,10 @@ export type Long = string;
  */
 
 export const models = [
+  {
+    name: "GameState",
+    embedded: false
+  },
   {
     name: "Lobby",
     embedded: false

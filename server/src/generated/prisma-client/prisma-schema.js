@@ -17,13 +17,19 @@ type BatchPayload {
 
 scalar DateTime
 
+enum GameState {
+  WAITING
+  STARTED
+  FINISHED
+}
+
 type Lobby {
   id: ID!
   createdAt: DateTime!
   updatedAt: DateTime!
-  started: Boolean!
-  creator: ID!
-  partner: ID
+  state: GameState!
+  creator: User!
+  partner: User
   creator_word: String
   partner_word: String
   rounds(where: RoundWhereInput, orderBy: RoundOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Round!]
@@ -36,9 +42,9 @@ type LobbyConnection {
 }
 
 input LobbyCreateInput {
-  started: Boolean!
-  creator: ID!
-  partner: ID
+  state: GameState!
+  creator: UserCreateOneInput!
+  partner: UserCreateOneInput
   creator_word: String
   partner_word: String
   rounds: RoundCreateManyInput
@@ -56,12 +62,8 @@ enum LobbyOrderByInput {
   createdAt_DESC
   updatedAt_ASC
   updatedAt_DESC
-  started_ASC
-  started_DESC
-  creator_ASC
-  creator_DESC
-  partner_ASC
-  partner_DESC
+  state_ASC
+  state_DESC
   creator_word_ASC
   creator_word_DESC
   partner_word_ASC
@@ -72,9 +74,7 @@ type LobbyPreviousValues {
   id: ID!
   createdAt: DateTime!
   updatedAt: DateTime!
-  started: Boolean!
-  creator: ID!
-  partner: ID
+  state: GameState!
   creator_word: String
   partner_word: String
 }
@@ -98,18 +98,16 @@ input LobbySubscriptionWhereInput {
 }
 
 input LobbyUpdateInput {
-  started: Boolean
-  creator: ID
-  partner: ID
+  state: GameState
+  creator: UserUpdateOneRequiredInput
+  partner: UserUpdateOneInput
   creator_word: String
   partner_word: String
   rounds: RoundUpdateManyInput
 }
 
 input LobbyUpdateManyMutationInput {
-  started: Boolean
-  creator: ID
-  partner: ID
+  state: GameState
   creator_word: String
   partner_word: String
 }
@@ -145,36 +143,12 @@ input LobbyWhereInput {
   updatedAt_lte: DateTime
   updatedAt_gt: DateTime
   updatedAt_gte: DateTime
-  started: Boolean
-  started_not: Boolean
-  creator: ID
-  creator_not: ID
-  creator_in: [ID!]
-  creator_not_in: [ID!]
-  creator_lt: ID
-  creator_lte: ID
-  creator_gt: ID
-  creator_gte: ID
-  creator_contains: ID
-  creator_not_contains: ID
-  creator_starts_with: ID
-  creator_not_starts_with: ID
-  creator_ends_with: ID
-  creator_not_ends_with: ID
-  partner: ID
-  partner_not: ID
-  partner_in: [ID!]
-  partner_not_in: [ID!]
-  partner_lt: ID
-  partner_lte: ID
-  partner_gt: ID
-  partner_gte: ID
-  partner_contains: ID
-  partner_not_contains: ID
-  partner_starts_with: ID
-  partner_not_starts_with: ID
-  partner_ends_with: ID
-  partner_not_ends_with: ID
+  state: GameState
+  state_not: GameState
+  state_in: [GameState!]
+  state_not_in: [GameState!]
+  creator: UserWhereInput
+  partner: UserWhereInput
   creator_word: String
   creator_word_not: String
   creator_word_in: [String!]
@@ -488,6 +462,7 @@ type Subscription {
 type User {
   id: ID!
   nick: String!
+  inLobby: ID
 }
 
 type UserConnection {
@@ -498,6 +473,12 @@ type UserConnection {
 
 input UserCreateInput {
   nick: String!
+  inLobby: ID
+}
+
+input UserCreateOneInput {
+  create: UserCreateInput
+  connect: UserWhereUniqueInput
 }
 
 type UserEdge {
@@ -510,6 +491,8 @@ enum UserOrderByInput {
   id_DESC
   nick_ASC
   nick_DESC
+  inLobby_ASC
+  inLobby_DESC
   createdAt_ASC
   createdAt_DESC
   updatedAt_ASC
@@ -519,6 +502,7 @@ enum UserOrderByInput {
 type UserPreviousValues {
   id: ID!
   nick: String!
+  inLobby: ID
 }
 
 type UserSubscriptionPayload {
@@ -539,12 +523,40 @@ input UserSubscriptionWhereInput {
   NOT: [UserSubscriptionWhereInput!]
 }
 
+input UserUpdateDataInput {
+  nick: String
+  inLobby: ID
+}
+
 input UserUpdateInput {
   nick: String
+  inLobby: ID
 }
 
 input UserUpdateManyMutationInput {
   nick: String
+  inLobby: ID
+}
+
+input UserUpdateOneInput {
+  create: UserCreateInput
+  update: UserUpdateDataInput
+  upsert: UserUpsertNestedInput
+  delete: Boolean
+  disconnect: Boolean
+  connect: UserWhereUniqueInput
+}
+
+input UserUpdateOneRequiredInput {
+  create: UserCreateInput
+  update: UserUpdateDataInput
+  upsert: UserUpsertNestedInput
+  connect: UserWhereUniqueInput
+}
+
+input UserUpsertNestedInput {
+  update: UserUpdateDataInput!
+  create: UserCreateInput!
 }
 
 input UserWhereInput {
@@ -576,6 +588,20 @@ input UserWhereInput {
   nick_not_starts_with: String
   nick_ends_with: String
   nick_not_ends_with: String
+  inLobby: ID
+  inLobby_not: ID
+  inLobby_in: [ID!]
+  inLobby_not_in: [ID!]
+  inLobby_lt: ID
+  inLobby_lte: ID
+  inLobby_gt: ID
+  inLobby_gte: ID
+  inLobby_contains: ID
+  inLobby_not_contains: ID
+  inLobby_starts_with: ID
+  inLobby_not_starts_with: ID
+  inLobby_ends_with: ID
+  inLobby_not_ends_with: ID
   AND: [UserWhereInput!]
   OR: [UserWhereInput!]
   NOT: [UserWhereInput!]
