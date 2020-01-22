@@ -7,6 +7,11 @@ type Mutation {
   setNick(nick: String!): AuthPayload!
 
   createLobby: Lobby!
+  deleteLobby(lobby: ID!): Boolean!
+
+  joinLobby(lobby: ID!): Lobby!
+  leaveLobby(lobby: ID!): Boolean!
+
   submitTurn(word: String!, lobby: ID!): String!
 
 }
@@ -20,6 +25,7 @@ type AuthPayload {
 type User {
   id: ID!
   nick: String!
+  inLobby: ID
 }
 
 
@@ -37,10 +43,16 @@ type Subscription {
 
 type Lobby {
   id: ID!
-  started: Boolean!
-  creator: ID!
-  partner: ID
+  state: GameState!
+  creator: User!
+  partner: User
   creator_word: String
   partner_word: String
   rounds: [Round!]
+}
+
+enum GameState {
+  WAITING
+  STARTED
+  FINISHED
 }

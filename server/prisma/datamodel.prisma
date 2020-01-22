@@ -1,6 +1,7 @@
 type User {
   id: ID! @id
   nick: String!
+  inLobby: ID
 }
 
 type Round {
@@ -13,10 +14,16 @@ type Lobby {
   id: ID! @id
   createdAt: DateTime! @createdAt
   updatedAt: DateTime! @updatedAt
-  started: Boolean!
-  creator: ID! 
-  partner: ID  
+  state: GameState!
+  creator: User! @relation(name: "Creator")
+  partner: User  @relation(name: "Partner")
   creator_word: String
   partner_word: String
   rounds: [Round!]
+}
+
+enum GameState {
+  WAITING
+  STARTED
+  FINISHED
 }
